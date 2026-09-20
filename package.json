@@ -1,0 +1,22 @@
+{
+  "name": "@hklang/chg050-step1",
+  "version": "5.0.16-step1",
+  "private": true,
+  "type": "module",
+  "description": "CHG-050 affected Stage-0 schema and validator regression only",
+  "scripts": {
+    "types:generate": "node scripts/generate-types.mjs",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "schema:generate": "node dist/src/schema/generate-schema.js",
+    "verify:step1": "node scripts/run-step1.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "ajv": "8.20.0",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

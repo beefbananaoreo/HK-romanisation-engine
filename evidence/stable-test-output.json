@@ -1,0 +1,1092 @@
+{
+  "format": "CHG050-STEP1-TEST-RESULTS-1",
+  "tests": [
+    {
+      "name": "T-API-055/057 G28/G30 Romanisation: all complete ordered three-unit partitions accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject empty grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject empty only group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject empty middle group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject missing array",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject null grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject string grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject non-array group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject null group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject negative",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject fractional",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject numeric string",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject null index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject boolean index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject object index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject unsafe integer",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject bigint index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject NaN",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject positive infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: schema and runtime reject negative infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field omitted tail",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field omitted head",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field omitted middle",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field duplicate inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field overlap across groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field all repeated",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field reordered groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field reordered inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field reversed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field out of range",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: runtime rejects cross-field safe maximum outside owner",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 Romanisation: absent/empty units and sparse arrays fail closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 Romanisation: exact assembled discriminant and forbidden canonical text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 Romanisation: verbatim exact UTF-16 text and no units/grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 G28/G30 EnglishForm: all complete ordered three-unit partitions accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject empty grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject empty only group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject empty middle group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject missing array",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject null grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject string grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject non-array group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject null group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject negative",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject fractional",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject numeric string",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject null index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject boolean index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject object index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject unsafe integer",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject bigint index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject NaN",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject positive infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: schema and runtime reject negative infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field omitted tail",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field omitted head",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field omitted middle",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field duplicate inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field overlap across groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field all repeated",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field reordered groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field reordered inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field reversed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field out of range",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: runtime rejects cross-field safe maximum outside owner",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 EnglishForm: absent/empty units and sparse arrays fail closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 EnglishForm: exact assembled discriminant and forbidden canonical text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 EnglishForm: verbatim exact UTF-16 text and no units/grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 G28/G30 MemoryRomanisation: all complete ordered three-unit partitions accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject empty grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject empty only group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject empty middle group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject missing array",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject null grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject string grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject non-array group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject null group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject negative",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject fractional",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject numeric string",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject null index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject boolean index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject object index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject unsafe integer",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject bigint index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject NaN",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject positive infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: schema and runtime reject negative infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field omitted tail",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field omitted head",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field omitted middle",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field duplicate inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field overlap across groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field all repeated",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field reordered groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field reordered inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field reversed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field out of range",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: runtime rejects cross-field safe maximum outside owner",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryRomanisation: absent/empty units and sparse arrays fail closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 MemoryRomanisation: exact assembled discriminant and forbidden canonical text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 MemoryRomanisation: verbatim exact UTF-16 text and no units/grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 G28/G30 MemoryEnglishForm: all complete ordered three-unit partitions accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject empty grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject empty only group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject empty middle group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject missing array",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject null grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject string grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject non-array group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject null group",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject negative",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject fractional",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject numeric string",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject null index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject boolean index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject object index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject unsafe integer",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject bigint index",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject NaN",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject positive infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: schema and runtime reject negative infinity",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field omitted tail",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field omitted head",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field omitted middle",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field duplicate inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field overlap across groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field all repeated",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field reordered groups",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field reordered inside",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field reversed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field out of range",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: runtime rejects cross-field safe maximum outside owner",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/057 MemoryEnglishForm: absent/empty units and sparse arrays fail closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 MemoryEnglishForm: exact assembled discriminant and forbidden canonical text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7 MemoryEnglishForm: verbatim exact UTF-16 text and no units/grouping",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 EnglishForm: style refs resolve by position; non-contiguous licences accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 EnglishForm: empty, missing, duplicate, unordered or unresolved refs rejected without repair",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 EnglishForm: only generated romanised given units are eligible",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7/G30 EnglishForm: legal person/non-person mixtures and verbatim isolation",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 MemoryEnglishForm: style refs resolve by position; non-contiguous licences accepted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 MemoryEnglishForm: empty, missing, duplicate, unordered or unresolved refs rejected without repair",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G16/G30 MemoryEnglishForm: only generated romanised given units are eligible",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G7/G30 MemoryEnglishForm: legal person/non-person mixtures and verbatim isolation",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-057 MemoryEnglishForm: style-reference integer domain is exact at runtime",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-057: actual schema contains non-empty units/groupings/inner groups and exact scalar constraints",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-030 CHG-050: exact presentation enums preserve narrow directive style",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "schema is valid strict JSON Schema 2020-12 with a closed 5.0.16 root graph",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Versions and Analysis identify corrected public contract 5.0.16",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CHG-047: every serialisable userDataVersion occurrence is an exact bounded integer",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "ProcessOptions exposes document tags while the options preimage uses exact UTF-16 set normalisation",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "diagnostic producers are closed and observable only through their owning serialisable channels",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "EngineCreationResult remains executable-only while its serialisable failure branch is strict",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-001..003: all seven status envelopes and null-versus-absence rules execute",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "selected and candidate inheritance is branch-exact",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Candidate.variation is legal only on the L2 Reading branch",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Romanisation discriminants preserve verbatim and assembled states exactly",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CHG-048: every public grouping scalar is an integer local-index domain",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "EnglishForm admits every verbatim kind and only legal assembled mixtures",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "memory forms mirror all legal discriminants while excluding spans and Analysis-local ids",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-CACHE-037 structural half: full nested DocumentContext integer fixture closes",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "GeneratedPersonNameStyle is narrowed independently from display-only styles",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "AnnotationRef, RomanisationRef, DerivedFrom and InheritanceRef unions are owner-exact",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "StoreEntry schema enforces the complete valid-store evidence and applicability matrix",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "invalid StoreEntry quarantine retains bad rows, while E3..E7 remain outside the StoreEntry domain",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "grouped alignment shapes execute without inventing assembly grouping semantics",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "UnresolvedSemanticSpan is a strict four-status discriminated union",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CanonicalValue is recursive, disjoint, integer-only and int64-bounded",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "ProviderSnapshot has the corrected strict public shape and canonical outputs",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Lattice closes edge discriminants and local index domains",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "current producers are enum-closed while reserved provenance remains consumer-readable",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "no v1 durable Entity Record persistence domain is materialised",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "strict public surface represents corrected positive states",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CHG-045 public types close creation, projection diagnostics, and document tags",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CHG-050 strict non-empty arrays and exact Style/Casing/GeneratedPersonNameStyle unions",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-050/051/054: userDataVersion has one exact bounded public number domain",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-052/053 and T-CACHE-035: transaction-counted lifecycle is global, no-op safe and atomically bounded",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-001..003: all seven status/value envelopes are executable",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-001: status matrix rejects null/absence, cardinality, rank, reason and confidence violations",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-019 and RULE-API-24: candidate ranks, evidence, support and inheritance remain candidate-local",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "§5.5 CandidateBase variation is restricted to L2 Reading candidates",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-020/021: ambiguity and equal-authority conflict retain candidate-local evidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-022 and §7.3: producer vocabulary, layer applicability and confidence gates are closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-016/017: verbatim and assembled EnglishForm discriminants are mutually exclusive",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-016: Romanisation branches preserve verbatim text or structured units, never both",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-055/G28: all grouping surfaces share the exact safe non-negative local-index domain",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-CACHE-037 structural/preimage half: nested DocumentContext integers are uniquely classified",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-009: branch-aware L3R rendering stays independent from selected L3E",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-032/RC-1..RC-4: assembled romanisation/hybrid, person and style applicability states are enforceable",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "§5.7/RC-4: style references are non-empty, unique, ordered, resolved and licensed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "RULE-API-21: memory assembled forms use indices and contain no Analysis-local ids or spans",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-036/INV-14: GroupedAlignment has ordered groups and exact one-group membership",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-022/025/026: valid StoreEntry evidence/attestation matrix is executable",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-031/G19 and RULE-API-25: StoreEntry applicability, quarantine and no-assembly rules are closed",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "RULE-API-25: stored translation/entity values map exactly to verbatim forms",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-035: store defaults and Basic-Latin case matching are deterministic",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-044..049/G26: documentTags use exact matching and a UTF-16-sorted set preimage",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-034: E3-E7 imports are invalid/no-write and apply reports only legal writes",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-028/029: DocumentContext memory is selected-only, span/id-free and alias-justified",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-040/G23: CanonicalValue accepts only exact CanonicalInteger sentinels in signed int64",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "§5.13 RULE-API-20: ProviderSnapshot shape, CanonicalValue output and duplicate inputHash are checked",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-011/043 and G25: EngineCreationResult validates clean, degraded and fatal snapshot branches",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "G24: Lattice edges and alternatives form exact, unique, complete local paths",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-024/G16: AnnotationRef requires one explicit owner and a legal owner/channel pair",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "§5.11: AnnotationProjection refs resolve and preserve owner/channel facts",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-ENT-053/G20: InheritanceRef branches are exclusive and resolve only in their domain",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-038: two channels inherit from distinct antecedents while a third stays local",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "INV-1/2/3/4/14: Analysis source spans, token partition and UTF-16 boundaries are checked",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "INV-16 and v1 domain closure: entity nesting, containment, structure and persistence boundaries are checked",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "RULE-API-13/19: Analysis unit ids, channel references and per-channel inheritance resolve",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "RULE-API-13 and §5.8: regions and term resolutions have deterministic identity/order/text/scope",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "§5.16: debug lattice and trace references are validated within the Analysis",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-030 and §5.12: TranslationDirectives shape preserves style, overlap, protection and reason legality",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-012/042/F7: overlap diagnostics are pure, exact, per-directive and deterministic",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-037/039 and RULE-API-23: bounded projection consistency rejects conflicts and preserves unresolved state",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-008/023: tolerant enum readers preserve unknown raw values and known values",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-API-013: deterministic test serialization recursively orders object keys but preserves arrays",
+      "nesting": 0,
+      "result": "PASS"
+    }
+  ],
+  "passed": 217,
+  "failed": 0
+}

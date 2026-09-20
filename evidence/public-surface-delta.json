@@ -1,0 +1,35 @@
+{
+  "schema": {
+    "added": [
+      "NonEmptyArray",
+      "NonEmptyReadonlyArray"
+    ],
+    "removed": [],
+    "changed": [
+      "AssembledRomanisation",
+      "Grouping",
+      "MemoryAssembledRomanisation",
+      "Versions"
+    ],
+    "unchanged": 172
+  },
+  "typeDelta": {
+    "added": [
+      "NonEmptyArray",
+      "NonEmptyReadonlyArray"
+    ],
+    "removed": [],
+    "changed": [
+      "AssembledEnglishFormBase",
+      "AssembledRomanisation",
+      "MemoryAssembledEnglishFormBase",
+      "MemoryRomanisation",
+      "MemoryStyledPersonEnglishForm",
+      "StyledPersonEnglishForm"
+    ],
+    "unchanged": 148
+  },
+  "authority": "CHG-050 §§5.2–5.3,5.6–5.7,5.10.2",
+  "unrelatedExistingSchemaDefinitions": "172 unchanged",
+  "baselineSchemaSha256": "286387085ed713fc90ec7bfeb57c2f55343aa1dae5a2d5145c8e39418819eb76"
+}

@@ -1,0 +1,783 @@
+{
+  "formatVersion": "1.0",
+  "authority": {
+    "path": "spec/HKLanguageLabPacket-v1.7.md",
+    "bytes": 752484,
+    "sha256": "0781cd1ccc9d94e46b553f51cd8f6b66b63bb3edd11cc279dce18468558db505",
+    "packetVersion": "1.7",
+    "section5Revision": "v0.16",
+    "contractVersion": "5.0.16",
+    "schemaVersion": "1.0"
+  },
+  "scope": "Step 1 contract-obligation materialisation, producer only",
+  "caseFixtureFile": "obligations/case-fixtures.json",
+  "statusDefinitions": {
+    "STRUCTURAL_EXECUTION_REQUIRED": "Unexecuted descriptor in this file. Producer must associate actual passing structural tests and schema/validator inspection before reporting STRUCTURAL_EXECUTED.",
+    "STRUCTURAL_EXECUTED": "Reserved for actual executed structural evidence. This file does not assign this status and cannot grant rendering credit.",
+    "RENDERING_OBLIGATION_ONLY": "Static expected vectors and explicit later runtime requirement. No semantic runtime PASS.",
+    "DEFERRED_INSTRUMENTATION_OBLIGATION": "Later engine/projection instrumentation is required; neither implemented nor executed.",
+    "HISTORICAL_REGRESSION_EXECUTION_REQUIRED": "Applicable accepted historical test scope retained; execution evidence belongs to root producer run."
+  },
+  "evidencePolicy": "Root STEP1_REPORT and stable test output record actual structural execution. These immutable descriptors are not a test result and do not issue independent Control credit.",
+  "rows": [
+    {
+      "id": "T-HKR-045",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 1307,
+        "lineEnd": 1307,
+        "section": "\u00a72.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-GROUPING-FOUR-SURFACES"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "GROUPING-THREE-WORDS",
+            "GROUPING-ONE-WORD"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-ENT-059",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 2451,
+        "lineEnd": 2451,
+        "section": "\u00a74.13"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-FIVE-CANONICAL",
+            "STYLE-SEPARATED-RUNS",
+            "STYLE-UNSTYLED-PERSON",
+            "STYLE-MIXED-FIVE"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-004",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4539,
+        "lineEnd": 4539,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "VERBATIM-ENGLISH-OFFICIAL_NAME",
+            "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+            "VERBATIM-ENGLISH-ROMANISATION",
+            "VERBATIM-ENGLISH-TRANSLATION",
+            "VERBATIM-ENGLISH-HYBRID",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-030",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4540,
+        "lineEnd": 4540,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-PROFILE-DOMAINS"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-033",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4568,
+        "lineEnd": 4568,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-MIXED-FIVE",
+            "STYLE-MIXED-PACKET-GROUPING",
+            "STYLE-MIXED-CODE-UNIT-INVARIANCE"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-055",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4594,
+        "lineEnd": 4594,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-GROUPING-FOUR-SURFACES",
+            "STRUCT-BRANCH-CLOSURE"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-056",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4595,
+        "lineEnd": 4595,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-NONPERSON-HYBRID",
+            "GROUPING-THREE-WORDS",
+            "GROUPING-ONE-WORD"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-057",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4596,
+        "lineEnd": 4596,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-GROUPING-FOUR-SURFACES",
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY",
+            "STRUCT-BRANCH-CLOSURE"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-058",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4597,
+        "lineEnd": 4597,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-FIVE-CANONICAL"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-059",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4598,
+        "lineEnd": 4598,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-SEPARATED-RUNS",
+            "STYLE-FORCED-SURNAME-BOUNDARY"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-060",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4599,
+        "lineEnd": 4599,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-UNSTYLED-PERSON",
+            "STYLE-NONPERSON-HYBRID",
+            "STYLE-MIXED-FIVE",
+            "VERBATIM-ENGLISH-OFFICIAL_NAME",
+            "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+            "VERBATIM-ENGLISH-ROMANISATION",
+            "VERBATIM-ENGLISH-TRANSLATION",
+            "VERBATIM-ENGLISH-HYBRID",
+            "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+            "BASE-LITERAL-OWNS-FIRST-ASCII",
+            "BASE-ROMANISED-OWNS-FIRST-ASCII"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-061",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4600,
+        "lineEnd": 4600,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "CASING-SINGLETON-GROUPS",
+            "CASING-MERGED-GROUP",
+            "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+            "CASING-NO-ASCII-LETTER"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-062",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4601,
+        "lineEnd": 4601,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "VERBATIM-ROMANISATION-MIXED-CODE-UNITS"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-063",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4602,
+        "lineEnd": 4602,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "VARIANTS-EMPTY",
+            "VARIANTS-ORDER-AND-DUPLICATES",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "T-API-064",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4603,
+        "lineEnd": 4603,
+        "section": "\u00a75.19"
+      },
+      "subObligations": [
+        {
+          "kind": "CROSS_RUNTIME_RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-FIVE-CANONICAL",
+            "STYLE-SEPARATED-RUNS",
+            "STYLE-FORCED-SURNAME-BOUNDARY",
+            "STYLE-UNSTYLED-PERSON",
+            "STYLE-NONPERSON-HYBRID",
+            "STYLE-MIXED-FIVE",
+            "STYLE-MIXED-PACKET-GROUPING",
+            "VERBATIM-ENGLISH-OFFICIAL_NAME",
+            "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+            "VERBATIM-ENGLISH-ROMANISATION",
+            "VERBATIM-ENGLISH-TRANSLATION",
+            "VERBATIM-ENGLISH-HYBRID",
+            "VERBATIM-ROMANISATION-MIXED-CODE-UNITS",
+            "GROUPING-THREE-WORDS",
+            "GROUPING-ONE-WORD",
+            "CASING-SINGLETON-GROUPS",
+            "CASING-MERGED-GROUP",
+            "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+            "CASING-NO-ASCII-LETTER",
+            "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+            "BASE-LITERAL-OWNS-FIRST-ASCII",
+            "BASE-ROMANISED-OWNS-FIRST-ASCII",
+            "VARIANTS-EMPTY",
+            "VARIANTS-ORDER-AND-DUPLICATES",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "requiredRuntimes": 2,
+          "claim": "Materialised cross-runtime comparison obligation only. No renderer or cross-runtime renderer execution occurred."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G7",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4929,
+        "lineEnd": 4929,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-BRANCH-CLOSURE",
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G14",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4936,
+        "lineEnd": 4936,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "PIPELINE_INSTRUMENTATION",
+          "status": "DEFERRED_INSTRUMENTATION_OBLIGATION",
+          "requirements": [
+            "style/floor changes alter projected directives only",
+            "zero segmentation counter delta",
+            "zero entity detection counter delta",
+            "zero reading resolution counter delta",
+            "zero romanisation counter delta",
+            "zero source-refetch counter delta",
+            "Analysis and Analysis.diagnostics unchanged"
+          ],
+          "evidence": null,
+          "claim": "No engine or projection is authorised in Step 1. Instrumentation execution remains later work; no runtime PASS."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G15",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4937,
+        "lineEnd": 4937,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "PIPELINE_INSTRUMENTATION",
+          "status": "DEFERRED_INSTRUMENTATION_OBLIGATION",
+          "requirements": [
+            "every display mode projects from the same cached Analysis",
+            "one core Analysis suffices without re-analysis",
+            "display settings cause zero pipeline work"
+          ],
+          "evidence": null,
+          "claim": "No engine or projection is authorised in Step 1. Instrumentation execution remains later work; no runtime PASS."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G16",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4938,
+        "lineEnd": 4938,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "HISTORICAL_STRUCTURAL_REGRESSION",
+          "status": "HISTORICAL_REGRESSION_EXECUTION_REQUIRED",
+          "requirements": [
+            "AnnotationRef has exactly one owner and owner-legal channel",
+            "derivedFrom.romanisationRef has exactly one owner, only romanisation channel and resolves in Analysis"
+          ],
+          "evidence": null,
+          "claim": "Unchanged historical reference checks remain applicable; style-reference delta does not claim complete G16 by itself."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G28",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4950,
+        "lineEnd": 4950,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-GROUPING-FOUR-SURFACES",
+            "STRUCT-BRANCH-CLOSURE"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G29",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4951,
+        "lineEnd": 4951,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-NONPERSON-HYBRID",
+            "GROUPING-THREE-WORDS",
+            "GROUPING-ONE-WORD"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G30",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4952,
+        "lineEnd": 4952,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-GROUPING-FOUR-SURFACES",
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY",
+            "STRUCT-BRANCH-CLOSURE"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G31",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4953,
+        "lineEnd": 4953,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-STYLE-REFERENCE-ELIGIBILITY"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-FIVE-CANONICAL",
+            "STYLE-SEPARATED-RUNS",
+            "STYLE-FORCED-SURNAME-BOUNDARY"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G32",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4954,
+        "lineEnd": 4954,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "STRUCTURAL",
+          "status": "STRUCTURAL_EXECUTION_REQUIRED",
+          "obligationIds": [
+            "STRUCT-PROFILE-DOMAINS",
+            "STRUCT-BRANCH-CLOSURE"
+          ],
+          "evidence": null,
+          "claim": "Static descriptors only. An actual applicable structural suite run and source/schema inspection must establish execution before producer reporting may claim STRUCTURAL_EXECUTED."
+        },
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-UNSTYLED-PERSON",
+            "STYLE-NONPERSON-HYBRID",
+            "STYLE-MIXED-FIVE",
+            "VERBATIM-ENGLISH-OFFICIAL_NAME",
+            "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+            "VERBATIM-ENGLISH-ROMANISATION",
+            "VERBATIM-ENGLISH-TRANSLATION",
+            "VERBATIM-ENGLISH-HYBRID",
+            "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+            "BASE-LITERAL-OWNS-FIRST-ASCII",
+            "BASE-ROMANISED-OWNS-FIRST-ASCII",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G33",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4955,
+        "lineEnd": 4955,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "VERBATIM-ROMANISATION-MIXED-CODE-UNITS",
+            "CASING-SINGLETON-GROUPS",
+            "CASING-MERGED-GROUP",
+            "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+            "CASING-NO-ASCII-LETTER"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G34",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4956,
+        "lineEnd": 4956,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "VARIANTS-EMPTY",
+            "VARIANTS-ORDER-AND-DUPLICATES",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "claim": "Expected output literals materialised; no renderer was invoked."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    },
+    {
+      "id": "G35",
+      "authorityLocator": {
+        "path": "spec/HKLanguageLabPacket-v1.7.md",
+        "lineStart": 4957,
+        "lineEnd": 4957,
+        "section": "\u00a76.11"
+      },
+      "subObligations": [
+        {
+          "kind": "CROSS_RUNTIME_RENDERING",
+          "status": "RENDERING_OBLIGATION_ONLY",
+          "caseIds": [
+            "STYLE-FIVE-CANONICAL",
+            "STYLE-SEPARATED-RUNS",
+            "STYLE-FORCED-SURNAME-BOUNDARY",
+            "STYLE-UNSTYLED-PERSON",
+            "STYLE-NONPERSON-HYBRID",
+            "STYLE-MIXED-FIVE",
+            "STYLE-MIXED-PACKET-GROUPING",
+            "VERBATIM-ENGLISH-OFFICIAL_NAME",
+            "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+            "VERBATIM-ENGLISH-ROMANISATION",
+            "VERBATIM-ENGLISH-TRANSLATION",
+            "VERBATIM-ENGLISH-HYBRID",
+            "VERBATIM-ROMANISATION-MIXED-CODE-UNITS",
+            "GROUPING-THREE-WORDS",
+            "GROUPING-ONE-WORD",
+            "CASING-SINGLETON-GROUPS",
+            "CASING-MERGED-GROUP",
+            "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+            "CASING-NO-ASCII-LETTER",
+            "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+            "BASE-LITERAL-OWNS-FIRST-ASCII",
+            "BASE-ROMANISED-OWNS-FIRST-ASCII",
+            "VARIANTS-EMPTY",
+            "VARIANTS-ORDER-AND-DUPLICATES",
+            "VARIANTS-VERBATIM-DUPLICATES"
+          ],
+          "evidence": null,
+          "requiredRuntimes": 2,
+          "claim": "Materialised cross-runtime comparison obligation only. No renderer or cross-runtime renderer execution occurred."
+        }
+      ],
+      "overallConformanceVerdict": "NOT_CLAIMED"
+    }
+  ],
+  "fullGatePassNotClaimed": [
+    "G14",
+    "G15",
+    "G16",
+    "G29",
+    "G31",
+    "G32",
+    "G33",
+    "G34",
+    "G35"
+  ],
+  "noImplementedFunctions": [
+    "renderRomanisation",
+    "renderPersonName",
+    "renderVariants",
+    "projectAnnotations",
+    "projectTranslationDirectives",
+    "createEngine",
+    "processText"
+  ],
+  "noReaderWork": true
+}

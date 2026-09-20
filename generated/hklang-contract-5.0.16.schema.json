@@ -1,0 +1,8099 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hklang.invalid/schema/contract/5.0.16",
+  "title": "Hong Kong Cantonese Language Lab public contract 5.0.16",
+  "description": "Strict current-producer schema for every serialisable live v1 public root, with the CHG-050 affected Stage-0 surface rematerialised.",
+  "$comment": "§5 v0.16 is authoritative. Cross-object, lifecycle and preimage rules that JSON Schema cannot express are enforced by executable validators/tests.",
+  "$ref": "#/$defs/Analysis",
+  "$defs": {
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/JsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          }
+        }
+      ]
+    },
+    "JsonObject": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      }
+    },
+    "NonEmptyArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "$comment": "Serialisable generic domain; each live instantiation further constrains its item type."
+    },
+    "NonEmptyReadonlyArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "$comment": "Serialisable generic domain; readonly affects TypeScript assignability, not the JSON shape. Each live instantiation further constrains its item type."
+    },
+    "NonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Sha256Hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "Span": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "integer",
+          "minimum": 0
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "$comment": "start <= end and source bounds are executable cross-object invariants."
+    },
+    "Grouping": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "$comment": "CHG-048/050: non-empty exact ordered partition of all owning units. Executable validation enforces index < owning units.length and flatten(grouping) === [0, 1, ..., units.length - 1]; malformed input is never repaired."
+    },
+    "Status": {
+      "enum": [
+        "resolved",
+        "fallback",
+        "ambiguous",
+        "conflict",
+        "unresolved",
+        "unsupported",
+        "out_of_scope"
+      ]
+    },
+    "Provenance": {
+      "enum": [
+        "user_glossary",
+        "entity_record",
+        "convention_table",
+        "lexicon",
+        "rule_engine",
+        "external",
+        "inherited",
+        "none"
+      ]
+    },
+    "ProducedProvenance": {
+      "enum": [
+        "user_glossary",
+        "convention_table",
+        "lexicon",
+        "rule_engine",
+        "inherited",
+        "none"
+      ],
+      "$comment": "entity_record and external are public reserved values with no conformant v1 producer."
+    },
+    "Confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ]
+    },
+    "EvidenceClass": {
+      "enum": [
+        "E1a",
+        "E1b",
+        "E1c",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "E7"
+      ]
+    },
+    "StoreEvidenceClass": {
+      "enum": [
+        "E1a",
+        "E1b",
+        "E1c",
+        "E2"
+      ]
+    },
+    "FormKind": {
+      "enum": [
+        "romanisation",
+        "official_name",
+        "native_original",
+        "translation",
+        "hybrid"
+      ]
+    },
+    "ExternalAttestation": {
+      "enum": [
+        "attested",
+        "not_attested",
+        "not_applicable"
+      ]
+    },
+    "VariationKind": {
+      "enum": [
+        "lexical",
+        "register",
+        "sociophonetic",
+        "sandhi",
+        "uncertain"
+      ]
+    },
+    "ReasonCode": {
+      "enum": [
+        "reading_not_found",
+        "number_reading_requires_context",
+        "lexicon_unavailable",
+        "unsupported_code_point",
+        "malformed_input",
+        "no_known_english_form"
+      ]
+    },
+    "CautionCode": {
+      "enum": [
+        "stale_source",
+        "overrides_official",
+        "decomposed_not_attested",
+        "source_unavailable",
+        "non_hk_convention_suspected",
+        "cjk_non_chinese_suspected",
+        "foreign_origin_suspected",
+        "sibilant_class_unknown",
+        "multiple_conventions",
+        "spelling_collision",
+        "bearer_spelling_unknown",
+        "non_chinese_script",
+        "window_ceiling_reached",
+        "official_name_expected"
+      ]
+    },
+    "DiagnosticCode": {
+      "enum": [
+        "LEXICON_MISSING_CAPABILITY",
+        "WINDOW_CEILING_REACHED",
+        "SOURCE_UNAVAILABLE",
+        "IMPORT_VALIDATION_FAILED",
+        "TERM_DIRECTIVE_DROPPED_OVERLAP",
+        "PROVIDER_SNAPSHOT_INVALID"
+      ]
+    },
+    "TokenType": {
+      "enum": [
+        "han",
+        "latin",
+        "digit",
+        "punct_cjk",
+        "punct_latin",
+        "space",
+        "symbol",
+        "emoji",
+        "script_other",
+        "unknown"
+      ]
+    },
+    "EntityType": {
+      "enum": [
+        "person",
+        "person.surname",
+        "person.foreign",
+        "place.region",
+        "place.district",
+        "place.area",
+        "place.village",
+        "place.topographic",
+        "street",
+        "building",
+        "facility",
+        "org.company",
+        "org.institution",
+        "org.government",
+        "work",
+        "event",
+        "other"
+      ]
+    },
+    "Attestation": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "enum": [
+            "individual",
+            "institution",
+            "place_instance",
+            "class"
+          ]
+        },
+        "sourceRef": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "asOf": {
+          "$ref": "#/$defs/NonEmptyString"
+        }
+      },
+      "required": [
+        "scope",
+        "sourceRef",
+        "asOf"
+      ],
+      "additionalProperties": false
+    },
+    "Versions": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "contractVersion": {
+          "const": "5.0.16"
+        },
+        "providerSnapshotId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sha256Hex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "engineVersion": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "lexiconVersion": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "rulesVersion": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "segmenterVersion": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "userDataVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "contractVersion",
+        "providerSnapshotId",
+        "engineVersion",
+        "lexiconVersion",
+        "rulesVersion",
+        "segmenterVersion",
+        "userDataVersion"
+      ],
+      "additionalProperties": false
+    },
+    "GroupedAlignment": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "syllableIndices": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "span",
+        "syllableIndices"
+      ],
+      "additionalProperties": false
+    },
+    "Syllable": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jyutping": {
+          "type": "string"
+        },
+        "initial": {
+          "type": "string"
+        },
+        "final": {
+          "type": "string"
+        },
+        "tone": {
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "syllabic": {
+          "type": "boolean"
+        },
+        "align": {
+          "enum": [
+            "exact",
+            "spread",
+            "grouped"
+          ]
+        }
+      },
+      "required": [
+        "span",
+        "jyutping",
+        "initial",
+        "final",
+        "tone",
+        "syllabic",
+        "align"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "align": {
+                "const": "grouped"
+              }
+            },
+            "required": [
+              "align"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "span": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "span": {
+                "$ref": "#/$defs/Span"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Reading": {
+      "type": "object",
+      "properties": {
+        "jyutping": {
+          "type": "string"
+        },
+        "syllables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Syllable"
+          }
+        },
+        "alignmentGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GroupedAlignment"
+          }
+        }
+      },
+      "required": [
+        "jyutping",
+        "syllables",
+        "alignmentGroups"
+      ],
+      "additionalProperties": false
+    },
+    "RomanisationUnit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "syllable": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "surname",
+            "given",
+            "prefix",
+            "specific",
+            "generic"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/EvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "sibilantClass": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "text",
+        "syllable",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "VerbatimRomanisation": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "const": "romanisation"
+        },
+        "assembled": {
+          "const": false
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "AssembledRomanisation": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "const": "romanisation"
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/RomanisationUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping"
+      ],
+      "additionalProperties": false
+    },
+    "Romanisation": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/VerbatimRomanisation"
+        },
+        {
+          "$ref": "#/$defs/AssembledRomanisation"
+        }
+      ]
+    },
+    "EnglishAssemblyRole": {
+      "enum": [
+        "surname",
+        "given",
+        "western_given",
+        "prefix",
+        "specific",
+        "generic"
+      ]
+    },
+    "CantoneseEnglishAssemblyRole": {
+      "enum": [
+        "surname",
+        "given",
+        "prefix",
+        "specific",
+        "generic"
+      ]
+    },
+    "EnglishAssemblyUnitBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/EnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "RomanisedEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "kind": {
+          "const": "romanised"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/CantoneseEnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "syllable": {
+          "type": "string"
+        },
+        "generated": {
+          "type": "boolean"
+        },
+        "sibilantClass": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "syllable",
+        "generated"
+      ],
+      "additionalProperties": false
+    },
+    "LiteralEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "kind": {
+          "const": "literal"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/EnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "TranslatedEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "kind": {
+          "const": "translated"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/CantoneseEnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "EnglishAssemblyUnit": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/RomanisedEnglishUnit"
+        },
+        {
+          "$ref": "#/$defs/LiteralEnglishUnit"
+        },
+        {
+          "$ref": "#/$defs/TranslatedEnglishUnit"
+        }
+      ]
+    },
+    "StyleApplicable": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "const": "givenName"
+        },
+        "unitIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/NonEmptyString"
+          }
+        }
+      },
+      "required": [
+        "scope",
+        "unitIds"
+      ],
+      "additionalProperties": false
+    },
+    "VerbatimEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "assembled": {
+          "const": false
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "StyledPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": true
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/StyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person",
+        "styleApplicable"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/LiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/TranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "units": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "romanised"
+                  },
+                  "role": {
+                    "const": "given"
+                  },
+                  "generated": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "kind",
+                  "role",
+                  "generated"
+                ]
+              },
+              "minContains": 1
+            }
+          }
+        }
+      ]
+    },
+    "UnstyledPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": true
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/StyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "styleApplicable": {}
+            },
+            "required": [
+              "styleApplicable"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/LiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/TranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "NonPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": false
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/StyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "styleApplicable": {}
+            },
+            "required": [
+              "styleApplicable"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/LiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/TranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "AssembledEnglishFormBase": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "type": "boolean"
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/StyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/RomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/LiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/TranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "AssembledEnglishForm": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/StyledPersonEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/UnstyledPersonEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/NonPersonEnglishForm"
+        }
+      ]
+    },
+    "EnglishForm": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/VerbatimEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/AssembledEnglishForm"
+        }
+      ]
+    },
+    "InheritanceRef": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "analysis"
+            },
+            "entityId": {
+              "$ref": "#/$defs/NonEmptyString"
+            }
+          },
+          "required": [
+            "kind",
+            "entityId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "documentContext"
+            },
+            "contextId": {
+              "$ref": "#/$defs/NonEmptyString"
+            },
+            "ref": {
+              "$ref": "#/$defs/NonEmptyString"
+            }
+          },
+          "required": [
+            "kind",
+            "contextId",
+            "ref"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "EntityAnnotationRef": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "const": "entity"
+        },
+        "entityId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "channel": {
+          "enum": [
+            "reading",
+            "romanisation",
+            "englishForm"
+          ]
+        }
+      },
+      "required": [
+        "owner",
+        "entityId",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "TokenAnnotationRef": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "const": "token"
+        },
+        "tokenId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "channel": {
+          "enum": [
+            "reading",
+            "romanisation"
+          ]
+        }
+      },
+      "required": [
+        "owner",
+        "tokenId",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "AnnotationRef": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EntityAnnotationRef"
+        },
+        {
+          "$ref": "#/$defs/TokenAnnotationRef"
+        }
+      ]
+    },
+    "EntityRomanisationRef": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "const": "entity"
+        },
+        "entityId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "channel": {
+          "const": "romanisation"
+        }
+      },
+      "required": [
+        "owner",
+        "entityId",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "TokenRomanisationRef": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "const": "token"
+        },
+        "tokenId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "channel": {
+          "const": "romanisation"
+        }
+      },
+      "required": [
+        "owner",
+        "tokenId",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "RomanisationRef": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EntityRomanisationRef"
+        },
+        {
+          "$ref": "#/$defs/TokenRomanisationRef"
+        }
+      ]
+    },
+    "DerivedFrom": {
+      "type": "object",
+      "properties": {
+        "layer": {
+          "const": "L3R"
+        },
+        "romanisationRef": {
+          "$ref": "#/$defs/RomanisationRef"
+        },
+        "fallbackReason": {
+          "const": "no_known_english_form"
+        },
+        "directStoreRead": {
+          "const": false
+        }
+      },
+      "required": [
+        "layer",
+        "romanisationRef",
+        "fallbackReason",
+        "directStoreRead"
+      ],
+      "additionalProperties": false
+    },
+    "CandidateReading": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Reading"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "const": "not_applicable"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "support": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "attestationCount": {
+          "type": "number"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "variation": {
+          "$ref": "#/$defs/VariationKind"
+        },
+        "note": {
+          "type": "string"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CandidateRomanisation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Romanisation"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "support": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "attestationCount": {
+          "type": "number"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CandidateEnglishForm": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/EnglishForm"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "support": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "attestationCount": {
+          "type": "number"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CandidateTermRendering": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/TermRendering"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "const": "not_applicable"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "support": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "attestationCount": {
+          "type": "number"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CandidateBase": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CandidateReading"
+        },
+        {
+          "$ref": "#/$defs/CandidateRomanisation"
+        },
+        {
+          "$ref": "#/$defs/CandidateEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/CandidateTermRendering"
+        }
+      ]
+    },
+    "InheritedCandidate": {
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CandidateReading"
+            },
+            {
+              "$ref": "#/$defs/CandidateRomanisation"
+            },
+            {
+              "$ref": "#/$defs/CandidateEnglishForm"
+            },
+            {
+              "$ref": "#/$defs/CandidateTermRendering"
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "provenance": {
+              "const": "inherited"
+            }
+          },
+          "required": [
+            "provenance",
+            "inheritedFrom"
+          ]
+        }
+      ]
+    },
+    "NonInheritedCandidate": {
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CandidateReading"
+            },
+            {
+              "$ref": "#/$defs/CandidateRomanisation"
+            },
+            {
+              "$ref": "#/$defs/CandidateEnglishForm"
+            },
+            {
+              "$ref": "#/$defs/CandidateTermRendering"
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "provenance": {
+              "enum": [
+                "user_glossary",
+                "convention_table",
+                "lexicon",
+                "rule_engine",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "provenance"
+          ]
+        }
+      ]
+    },
+    "Candidate": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CandidateReading"
+        },
+        {
+          "$ref": "#/$defs/CandidateRomanisation"
+        },
+        {
+          "$ref": "#/$defs/CandidateEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/CandidateTermRendering"
+        }
+      ]
+    },
+    "ValueReading": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reading"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "const": "not_applicable"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateReading"
+          }
+        },
+        "ranked": {
+          "type": "boolean"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "reason": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "derivedFrom": {
+          "$ref": "#/$defs/DerivedFrom"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "alternatives",
+        "ranked",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "resolved"
+                },
+                "value": {
+                  "$ref": "#/$defs/Reading"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "fallback"
+                },
+                "value": {
+                  "$ref": "#/$defs/Reading"
+                },
+                "confidence": {
+                  "enum": [
+                    "low",
+                    "none"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ambiguous"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": true
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "conflict"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unresolved"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unsupported"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "out_of_scope"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "ranked": {
+                "const": true
+              }
+            },
+            "required": [
+              "ranked"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateReading"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rank": {}
+                      },
+                      "required": [
+                        "rank"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateReading"
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {}
+                        },
+                        "required": [
+                          "rank"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "value",
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "derivedFrom": {}
+            },
+            "required": [
+              "derivedFrom"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ValueRomanisation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Romanisation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateRomanisation"
+          }
+        },
+        "ranked": {
+          "type": "boolean"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "reason": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "derivedFrom": {
+          "$ref": "#/$defs/DerivedFrom"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "alternatives",
+        "ranked",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "resolved"
+                },
+                "value": {
+                  "$ref": "#/$defs/Romanisation"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "fallback"
+                },
+                "value": {
+                  "$ref": "#/$defs/Romanisation"
+                },
+                "confidence": {
+                  "enum": [
+                    "low",
+                    "none"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ambiguous"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": true
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "conflict"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unresolved"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unsupported"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "out_of_scope"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "ranked": {
+                "const": true
+              }
+            },
+            "required": [
+              "ranked"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateRomanisation"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rank": {}
+                      },
+                      "required": [
+                        "rank"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateRomanisation"
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {}
+                        },
+                        "required": [
+                          "rank"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "value",
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "derivedFrom": {}
+            },
+            "required": [
+              "derivedFrom"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ValueEnglishForm": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EnglishForm"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateEnglishForm"
+          }
+        },
+        "ranked": {
+          "type": "boolean"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "reason": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "derivedFrom": {
+          "$ref": "#/$defs/DerivedFrom"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "alternatives",
+        "ranked",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "resolved"
+                },
+                "value": {
+                  "$ref": "#/$defs/EnglishForm"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "fallback"
+                },
+                "value": {
+                  "$ref": "#/$defs/EnglishForm"
+                },
+                "confidence": {
+                  "enum": [
+                    "low",
+                    "none"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ambiguous"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": true
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "conflict"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unresolved"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unsupported"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "out_of_scope"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "ranked": {
+                "const": true
+              }
+            },
+            "required": [
+              "ranked"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateEnglishForm"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rank": {}
+                      },
+                      "required": [
+                        "rank"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateEnglishForm"
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {}
+                        },
+                        "required": [
+                          "rank"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "value",
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ValueTermRendering": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TermRendering"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "const": "not_applicable"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateTermRendering"
+          }
+        },
+        "ranked": {
+          "type": "boolean"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        },
+        "reason": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "derivedFrom": {
+          "$ref": "#/$defs/DerivedFrom"
+        },
+        "inheritedFrom": {
+          "$ref": "#/$defs/InheritanceRef"
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "alternatives",
+        "ranked",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "resolved"
+                },
+                "value": {
+                  "$ref": "#/$defs/TermRendering"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "fallback"
+                },
+                "value": {
+                  "$ref": "#/$defs/TermRendering"
+                },
+                "confidence": {
+                  "enum": [
+                    "low",
+                    "none"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ambiguous"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": true
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "conflict"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "minItems": 2
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unresolved"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unsupported"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                },
+                "reason": {
+                  "$ref": "#/$defs/ReasonCode"
+                }
+              },
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "out_of_scope"
+                },
+                "value": {
+                  "type": "null"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "maxItems": 0
+                },
+                "ranked": {
+                  "const": false
+                },
+                "confidence": {
+                  "const": "none"
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {}
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "ranked": {
+                "const": true
+              }
+            },
+            "required": [
+              "ranked"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateTermRendering"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rank": {}
+                      },
+                      "required": [
+                        "rank"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/CandidateTermRendering"
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {}
+                        },
+                        "required": [
+                          "rank"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "value",
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "inheritedFrom": {}
+            },
+            "required": [
+              "inheritedFrom"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "inheritedFrom": {}
+              },
+              "required": [
+                "inheritedFrom"
+              ]
+            }
+          }
+        },
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "derivedFrom": {}
+            },
+            "required": [
+              "derivedFrom"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Value": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ValueReading"
+        },
+        {
+          "$ref": "#/$defs/ValueRomanisation"
+        },
+        {
+          "$ref": "#/$defs/ValueEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/ValueTermRendering"
+        }
+      ]
+    },
+    "TokenSegment": {
+      "type": "object",
+      "properties": {
+        "matched": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "lexicon",
+            "user_glossary",
+            "character",
+            "forced"
+          ]
+        }
+      },
+      "required": [
+        "matched",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "KeyTransform": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "variant_fold",
+            "simplified_fold",
+            "nfc"
+          ]
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/TokenType"
+        },
+        "segment": {
+          "$ref": "#/$defs/TokenSegment"
+        },
+        "reading": {
+          "$ref": "#/$defs/ValueReading"
+        },
+        "romanisation": {
+          "$ref": "#/$defs/ValueRomanisation"
+        },
+        "keyTransform": {
+          "$ref": "#/$defs/KeyTransform"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "text",
+        "type",
+        "reading",
+        "romanisation"
+      ],
+      "additionalProperties": false
+    },
+    "DetectionEvidence": {
+      "type": "object",
+      "properties": {
+        "mechanism": {
+          "enum": [
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+            "D5",
+            "D6",
+            "D7"
+          ]
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mechanism"
+      ],
+      "additionalProperties": false
+    },
+    "PersonNameSurname": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "compound": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "span",
+        "compound"
+      ],
+      "additionalProperties": false
+    },
+    "PersonNamePart": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "PersonNameStructure": {
+      "type": "object",
+      "properties": {
+        "surname": {
+          "$ref": "#/$defs/PersonNameSurname"
+        },
+        "givenName": {
+          "$ref": "#/$defs/PersonNamePart"
+        },
+        "prefix": {
+          "$ref": "#/$defs/PersonNamePart"
+        },
+        "westernGiven": {
+          "$ref": "#/$defs/PersonNamePart"
+        },
+        "maidenSurname": {
+          "$ref": "#/$defs/PersonNamePart"
+        },
+        "order": {
+          "enum": [
+            "surname_first",
+            "given_first"
+          ]
+        },
+        "parseAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PersonNameStructure"
+          }
+        }
+      },
+      "required": [
+        "order"
+      ],
+      "additionalProperties": false
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "primary": {
+          "type": "boolean"
+        },
+        "containedBy": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "englishFallbackPolicy": {
+          "enum": [
+            "romanisation_allowed",
+            "prefer_original_recovery",
+            "no_automatic_romanisation"
+          ]
+        },
+        "structure": {
+          "$ref": "#/$defs/PersonNameStructure"
+        },
+        "detectionEvidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DetectionEvidence"
+          }
+        },
+        "detectionConfidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "reading": {
+          "$ref": "#/$defs/ValueReading"
+        },
+        "romanisation": {
+          "$ref": "#/$defs/ValueRomanisation"
+        },
+        "englishForm": {
+          "$ref": "#/$defs/ValueEnglishForm"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "text",
+        "type",
+        "primary",
+        "englishFallbackPolicy",
+        "detectionEvidence",
+        "detectionConfidence",
+        "reading",
+        "romanisation",
+        "englishForm"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "person",
+                  "person.surname",
+                  "person.foreign"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "structure": {}
+              },
+              "required": [
+                "structure"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "EntityBoundaryCandidate": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "detectionEvidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DetectionEvidence"
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        }
+      },
+      "required": [
+        "span",
+        "text",
+        "type",
+        "detectionEvidence",
+        "confidence"
+      ],
+      "additionalProperties": false
+    },
+    "AmbiguousRegion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "kind": {
+          "const": "entity_boundary"
+        },
+        "alternatives": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/EntityBoundaryCandidate"
+          }
+        },
+        "ranked": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "span",
+        "kind",
+        "alternatives",
+        "ranked"
+      ],
+      "additionalProperties": false
+    },
+    "TermRendering": {
+      "type": "object",
+      "properties": {
+        "preferred": {
+          "type": "string"
+        },
+        "entryId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "entryScope": {
+          "enum": [
+            "lexical",
+            "phrase"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "preferred",
+        "entryId",
+        "entryScope"
+      ],
+      "additionalProperties": false
+    },
+    "TermResolution": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "sourceText": {
+          "type": "string"
+        },
+        "entryScope": {
+          "enum": [
+            "lexical",
+            "phrase"
+          ]
+        },
+        "result": {
+          "$ref": "#/$defs/ValueTermRendering"
+        }
+      },
+      "required": [
+        "span",
+        "sourceText",
+        "entryScope",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "TermDirective": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "sourceText": {
+          "type": "string"
+        },
+        "preferred": {
+          "type": "string"
+        },
+        "entryScope": {
+          "enum": [
+            "lexical",
+            "phrase"
+          ]
+        },
+        "entryId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "span",
+        "sourceText",
+        "preferred",
+        "entryScope",
+        "entryId",
+        "evidenceClass"
+      ],
+      "additionalProperties": false
+    },
+    "Diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/DiagnosticCode"
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ]
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/$defs/JsonObject"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "CreationDiagnostic": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Diagnostic"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "enum": [
+                "LEXICON_MISSING_CAPABILITY",
+                "PROVIDER_SNAPSHOT_INVALID"
+              ]
+            }
+          },
+          "required": [
+            "code"
+          ]
+        },
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "span": {}
+            },
+            "required": [
+              "span"
+            ]
+          }
+        }
+      ],
+      "$comment": "Creation diagnostics have no source document and therefore omit span (§5.10/§5.14)."
+    },
+    "AnalysisDiagnostic": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Diagnostic"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "enum": [
+                "WINDOW_CEILING_REACHED",
+                "SOURCE_UNAVAILABLE"
+              ]
+            }
+          },
+          "required": [
+            "code"
+          ]
+        }
+      ],
+      "$comment": "Only current processText/content producer codes inhabit Analysis.diagnostics; reserved unassigned and other-channel codes remain outside it (§5.14)."
+    },
+    "ProjectionDiagnostic": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Diagnostic"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "const": "TERM_DIRECTIVE_DROPPED_OVERLAP"
+            },
+            "span": {
+              "$ref": "#/$defs/Span"
+            }
+          },
+          "required": [
+            "code",
+            "span"
+          ]
+        }
+      ],
+      "$comment": "Exactly the projection-owned code; its span is the dropped TermDirective span (§5.12/§5.14)."
+    },
+    "StoreName": {
+      "enum": [
+        "pronunciation",
+        "translation",
+        "hk_romanisation"
+      ]
+    },
+    "StoreEntryScope": {
+      "enum": [
+        "lexical",
+        "phrase",
+        "entity"
+      ]
+    },
+    "StoreMatch": {
+      "enum": [
+        "exact",
+        "contextual"
+      ]
+    },
+    "StoreMatchContext": {
+      "type": "object",
+      "properties": {
+        "precededBy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "followedBy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entityType": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "documentTag": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "StoreEntryBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "caseSensitive": {
+          "type": "boolean"
+        },
+        "match": {
+          "$ref": "#/$defs/StoreMatch"
+        },
+        "context": {
+          "$ref": "#/$defs/StoreMatchContext"
+        },
+        "note": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "value",
+        "caseSensitive",
+        "match",
+        "createdAt",
+        "updatedAt",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "ValidationError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "path",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "ValidStoreValidation": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "const": true
+        },
+        "errors": {
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "ok",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "InvalidStoreValidation": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "const": false
+        },
+        "errors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ValidationError"
+          }
+        }
+      },
+      "required": [
+        "ok",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "StoreEntryShape": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "store": {
+          "$ref": "#/$defs/StoreName"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "caseSensitive": {
+          "type": "boolean"
+        },
+        "match": {
+          "$ref": "#/$defs/StoreMatch"
+        },
+        "context": {
+          "$ref": "#/$defs/StoreMatchContext"
+        },
+        "note": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "number"
+        },
+        "entryScope": {
+          "$ref": "#/$defs/StoreEntryScope"
+        },
+        "entityTypeHint": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "validation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ValidStoreValidation"
+            },
+            {
+              "$ref": "#/$defs/InvalidStoreValidation"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "store",
+        "key",
+        "value",
+        "caseSensitive",
+        "match",
+        "createdAt",
+        "updatedAt",
+        "revision",
+        "entryScope",
+        "enabled",
+        "evidenceClass",
+        "externalAttestation",
+        "validation"
+      ],
+      "additionalProperties": false
+    },
+    "ApplicableStoreEvidence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "enum": [
+                "E1a",
+                "E1b"
+              ]
+            },
+            "externalAttestation": {
+              "const": "not_attested"
+            },
+            "attestation": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation",
+            "attestation"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "const": "E1c"
+            },
+            "externalAttestation": {
+              "const": "attested"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "const": "E2"
+            },
+            "externalAttestation": {
+              "const": "attested"
+            },
+            "attestation": {
+              "$ref": "#/$defs/Attestation"
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation",
+            "attestation"
+          ]
+        }
+      ]
+    },
+    "InapplicableStoreEvidence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "enum": [
+                "E1a",
+                "E1b"
+              ]
+            },
+            "externalAttestation": {
+              "const": "not_applicable"
+            },
+            "attestation": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation",
+            "attestation"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "const": "E1c"
+            },
+            "externalAttestation": {
+              "const": "not_applicable"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "evidenceClass": {
+              "const": "E2"
+            },
+            "externalAttestation": {
+              "const": "not_applicable"
+            },
+            "attestation": {
+              "$ref": "#/$defs/Attestation"
+            }
+          },
+          "required": [
+            "evidenceClass",
+            "externalAttestation",
+            "attestation"
+          ]
+        }
+      ]
+    },
+    "ValidStoreState": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "validation": {
+          "$ref": "#/$defs/ValidStoreValidation"
+        }
+      },
+      "required": [
+        "enabled",
+        "validation"
+      ],
+      "additionalProperties": false
+    },
+    "StoreScopeFields": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "entryScope": {
+              "const": "entity"
+            },
+            "entityTypeHint": {
+              "$ref": "#/$defs/EntityType"
+            }
+          },
+          "required": [
+            "entryScope"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "entryScope": {
+              "enum": [
+                "lexical",
+                "phrase"
+              ]
+            }
+          },
+          "required": [
+            "entryScope"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ValidStoreEntry": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/StoreEntryShape"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "validation": {
+              "$ref": "#/$defs/ValidStoreValidation"
+            }
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "store": {
+                  "const": "pronunciation"
+                }
+              },
+              "required": [
+                "store"
+              ],
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "formKind": {}
+                    },
+                    "required": [
+                      "formKind"
+                    ]
+                  }
+                },
+                {
+                  "$ref": "#/$defs/InapplicableStoreEvidence"
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "store": {
+                  "const": "hk_romanisation"
+                }
+              },
+              "required": [
+                "store"
+              ],
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "formKind": {}
+                    },
+                    "required": [
+                      "formKind"
+                    ]
+                  }
+                },
+                {
+                  "$ref": "#/$defs/ApplicableStoreEvidence"
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "store": {
+                  "const": "translation"
+                },
+                "entryScope": {
+                  "const": "entity"
+                }
+              },
+              "required": [
+                "store",
+                "entryScope",
+                "formKind"
+              ],
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ApplicableStoreEvidence"
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "store": {
+                  "const": "translation"
+                },
+                "entryScope": {
+                  "enum": [
+                    "lexical",
+                    "phrase"
+                  ]
+                }
+              },
+              "required": [
+                "store",
+                "entryScope"
+              ],
+              "allOf": [
+                {
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "formKind": {}
+                    },
+                    "required": [
+                      "formKind"
+                    ]
+                  }
+                },
+                {
+                  "$ref": "#/$defs/InapplicableStoreEvidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "entryScope": {
+                "const": "entity"
+              }
+            },
+            "required": [
+              "entryScope"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "entityTypeHint": {}
+              },
+              "required": [
+                "entityTypeHint"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "InvalidStoreEntry": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/StoreEntryShape"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "const": false
+            },
+            "validation": {
+              "$ref": "#/$defs/InvalidStoreValidation"
+            }
+          },
+          "required": [
+            "enabled",
+            "validation"
+          ]
+        }
+      ]
+    },
+    "StoreEntry": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ValidStoreEntry"
+        },
+        {
+          "$ref": "#/$defs/InvalidStoreEntry"
+        }
+      ]
+    },
+    "StoreListQuery": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "entryScope": {
+          "$ref": "#/$defs/StoreEntryScope"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "StoreSearchOptions": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "entryScope": {
+          "$ref": "#/$defs/StoreEntryScope"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        },
+        "context": {
+          "$ref": "#/$defs/StoreMatchContext"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "StoreEntryDraft": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "entryScope": {
+          "$ref": "#/$defs/StoreEntryScope"
+        },
+        "entityTypeHint": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "caseSensitive": {
+          "type": "boolean"
+        },
+        "match": {
+          "$ref": "#/$defs/StoreMatch"
+        },
+        "context": {
+          "$ref": "#/$defs/StoreMatchContext"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "StoreEntryPatch": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "entryScope": {
+          "$ref": "#/$defs/StoreEntryScope"
+        },
+        "entityTypeHint": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "caseSensitive": {
+          "type": "boolean"
+        },
+        "match": {
+          "$ref": "#/$defs/StoreMatch"
+        },
+        "context": {
+          "$ref": "#/$defs/StoreMatchContext"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/StoreEvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "StoreCreateResult": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "$ref": "#/$defs/StoreEntry"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StoreEntry"
+          }
+        }
+      },
+      "required": [
+        "entry",
+        "conflicts"
+      ],
+      "additionalProperties": false
+    },
+    "StoreExport": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "store": {
+          "$ref": "#/$defs/StoreName"
+        },
+        "exportedAt": {
+          "type": "string"
+        },
+        "engineVersion": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StoreEntry"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "store",
+        "exportedAt",
+        "engineVersion",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "StoreImportData": {
+      "$ref": "#/$defs/JsonValue"
+    },
+    "StoreImportMode": {
+      "enum": [
+        "preview",
+        "apply"
+      ]
+    },
+    "StoreImportAction": {
+      "enum": [
+        "add",
+        "update",
+        "conflict",
+        "invalid"
+      ]
+    },
+    "StoreImportRow": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "number"
+        },
+        "action": {
+          "$ref": "#/$defs/StoreImportAction"
+        },
+        "input": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "entry": {
+          "$ref": "#/$defs/StoreEntry"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StoreEntry"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValidationError"
+          }
+        }
+      },
+      "required": [
+        "index",
+        "action",
+        "input",
+        "conflicts",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "ImportPreview": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "const": "preview"
+        },
+        "store": {
+          "$ref": "#/$defs/StoreName"
+        },
+        "writesApplied": {
+          "const": false
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StoreImportRow"
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "store",
+        "writesApplied",
+        "rows"
+      ],
+      "additionalProperties": false
+    },
+    "ImportResult": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "const": "apply"
+        },
+        "store": {
+          "$ref": "#/$defs/StoreName"
+        },
+        "writesApplied": {
+          "type": "boolean"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StoreImportRow"
+          }
+        },
+        "userDataVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "mode",
+        "store",
+        "writesApplied",
+        "rows",
+        "userDataVersion"
+      ],
+      "additionalProperties": false
+    },
+    "DebugOptions": {
+      "type": "object",
+      "properties": {
+        "lattice": {
+          "type": "boolean"
+        },
+        "trace": {
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "ProcessOptions": {
+      "type": "object",
+      "properties": {
+        "documentContext": {
+          "$ref": "#/$defs/DocumentContext"
+        },
+        "documentTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "$comment": "Raw current-call labels. The optionsHash preimage uses [] for omission, exact deduplication, and ascending UTF-16 code-unit order; input duplicates/order remain legal (§5.10/§5.15)."
+        },
+        "latinReadingPolicy": {
+          "enum": [
+            "none",
+            "letter_names",
+            "loanword_lexicon"
+          ]
+        },
+        "numberReadingPolicy": {
+          "enum": [
+            "none",
+            "digits",
+            "cardinal"
+          ]
+        },
+        "phoneticComponentHeuristic": {
+          "type": "boolean"
+        },
+        "debug": {
+          "$ref": "#/$defs/DebugOptions"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "EngineCreationFailure": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "const": false
+        },
+        "engine": {
+          "type": "null"
+        },
+        "diagnostics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/CreationDiagnostic"
+          },
+          "contains": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/CreationDiagnostic"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "const": "PROVIDER_SNAPSHOT_INVALID"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              }
+            ]
+          },
+          "minContains": 1
+        }
+      },
+      "required": [
+        "ok",
+        "engine",
+        "diagnostics"
+      ],
+      "additionalProperties": false,
+      "$comment": "The independently serialisable failure branch. EngineCreationResult/Success are executable API types because success carries a live Engine."
+    },
+    "JyutpingValidationResult": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "ok",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "MemorySyllable": {
+      "type": "object",
+      "properties": {
+        "jyutping": {
+          "type": "string"
+        },
+        "initial": {
+          "type": "string"
+        },
+        "final": {
+          "type": "string"
+        },
+        "tone": {
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "syllabic": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "jyutping",
+        "initial",
+        "final",
+        "tone",
+        "syllabic"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryReading": {
+      "type": "object",
+      "properties": {
+        "jyutping": {
+          "type": "string"
+        },
+        "syllables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MemorySyllable"
+          }
+        }
+      },
+      "required": [
+        "jyutping",
+        "syllables"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryUnit": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "syllable": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "surname",
+            "given",
+            "prefix",
+            "specific",
+            "generic"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/EvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "text",
+        "syllable",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryVerbatimRomanisation": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "const": "romanisation"
+        },
+        "assembled": {
+          "const": false
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryAssembledRomanisation": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "const": "romanisation"
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/MemoryUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryRomanisation": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MemoryVerbatimRomanisation"
+        },
+        {
+          "$ref": "#/$defs/MemoryAssembledRomanisation"
+        }
+      ]
+    },
+    "MemoryEnglishAssemblyUnitBase": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/EnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryRomanisedEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "romanised"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/CantoneseEnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "syllable": {
+          "type": "string"
+        },
+        "generated": {
+          "type": "boolean"
+        },
+        "sibilantClass": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "syllable",
+        "generated"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryLiteralEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "literal"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/EnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryTranslatedEnglishUnit": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "translated"
+        },
+        "text": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/CantoneseEnglishAssemblyRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryEnglishAssemblyUnit": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+        },
+        {
+          "$ref": "#/$defs/MemoryLiteralEnglishUnit"
+        },
+        {
+          "$ref": "#/$defs/MemoryTranslatedEnglishUnit"
+        }
+      ]
+    },
+    "MemoryStyleApplicable": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "const": "givenName"
+        },
+        "unitIndices": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "required": [
+        "scope",
+        "unitIndices"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryVerbatimEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "assembled": {
+          "const": false
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "MemoryStyledPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/MemoryEnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": true
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/MemoryStyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person",
+        "styleApplicable"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/MemoryLiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/MemoryTranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "units": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "romanised"
+                  },
+                  "role": {
+                    "const": "given"
+                  },
+                  "generated": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "kind",
+                  "role",
+                  "generated"
+                ]
+              },
+              "minContains": 1
+            }
+          }
+        }
+      ]
+    },
+    "MemoryUnstyledPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/MemoryEnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": true
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/MemoryStyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "styleApplicable": {}
+            },
+            "required": [
+              "styleApplicable"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/MemoryLiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/MemoryTranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryNonPersonEnglishForm": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/MemoryEnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "const": false
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/MemoryStyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping",
+        "person"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "properties": {
+              "styleApplicable": {}
+            },
+            "required": [
+              "styleApplicable"
+            ]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/MemoryLiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/MemoryTranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryAssembledEnglishFormBase": {
+      "type": "object",
+      "properties": {
+        "formKind": {
+          "enum": [
+            "romanisation",
+            "hybrid"
+          ]
+        },
+        "assembled": {
+          "const": true
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/MemoryEnglishAssemblyUnit"
+          }
+        },
+        "grouping": {
+          "$ref": "#/$defs/Grouping"
+        },
+        "person": {
+          "type": "boolean"
+        },
+        "styleApplicable": {
+          "$ref": "#/$defs/MemoryStyleApplicable"
+        }
+      },
+      "required": [
+        "formKind",
+        "assembled",
+        "units",
+        "grouping"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "romanisation"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "formKind": {
+                "const": "hybrid"
+              }
+            },
+            "required": [
+              "formKind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "units": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/MemoryRomanisedEnglishUnit"
+                },
+                "minContains": 1,
+                "allOf": [
+                  {
+                    "type": "array",
+                    "contains": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/MemoryLiteralEnglishUnit"
+                        },
+                        {
+                          "$ref": "#/$defs/MemoryTranslatedEnglishUnit"
+                        }
+                      ]
+                    },
+                    "minContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryEnglishForm": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MemoryVerbatimEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/MemoryStyledPersonEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/MemoryUnstyledPersonEnglishForm"
+        },
+        {
+          "$ref": "#/$defs/MemoryNonPersonEnglishForm"
+        }
+      ]
+    },
+    "MemoryChannelReading": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/MemoryReading"
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "fallback"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "const": "not_applicable"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "fallback"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryChannelRomanisation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/MemoryRomanisation"
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "fallback"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "fallback"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryChannelEnglishForm": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/MemoryEnglishForm"
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "fallback"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidenceClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceClass"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "attestation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attestation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopeDowngrade": {
+          "const": "class_applied_to_individual"
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        }
+      },
+      "required": [
+        "value",
+        "status",
+        "provenance",
+        "confidence",
+        "evidenceClass",
+        "externalAttestation",
+        "cautions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "fallback"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "scopeDowngrade": {
+                "const": "class_applied_to_individual"
+              }
+            },
+            "required": [
+              "scopeDowngrade"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E6"
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MemoryChannel": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MemoryChannelReading"
+        },
+        {
+          "$ref": "#/$defs/MemoryChannelRomanisation"
+        },
+        {
+          "$ref": "#/$defs/MemoryChannelEnglishForm"
+        }
+      ]
+    },
+    "MemoryPersonName": {
+      "type": "object",
+      "properties": {
+        "surnameText": {
+          "type": "string"
+        },
+        "givenNameText": {
+          "type": "string"
+        },
+        "prefixText": {
+          "type": "string"
+        },
+        "westernGivenText": {
+          "type": "string"
+        },
+        "maidenSurnameText": {
+          "type": "string"
+        },
+        "compoundSurname": {
+          "type": "boolean"
+        },
+        "order": {
+          "enum": [
+            "surname_first",
+            "given_first"
+          ]
+        }
+      },
+      "required": [
+        "compoundSurname",
+        "order"
+      ],
+      "additionalProperties": false
+    },
+    "EntityMemoryEntry": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "text": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "name": {
+          "$ref": "#/$defs/MemoryPersonName"
+        },
+        "reading": {
+          "$ref": "#/$defs/MemoryChannelReading"
+        },
+        "romanisation": {
+          "$ref": "#/$defs/MemoryChannelRomanisation"
+        },
+        "englishForm": {
+          "$ref": "#/$defs/MemoryChannelEnglishForm"
+        }
+      },
+      "required": [
+        "ref",
+        "text",
+        "type"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "person",
+                  "person.surname",
+                  "person.foreign"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "else": {
+            "not": {
+              "type": "object",
+              "properties": {
+                "name": {}
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "DocumentContext": {
+      "type": "object",
+      "properties": {
+        "contextFormatVersion": {
+          "const": "1"
+        },
+        "id": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityMemoryEntry"
+          }
+        }
+      },
+      "required": [
+        "contextFormatVersion",
+        "id",
+        "entities"
+      ],
+      "additionalProperties": false
+    },
+    "StyleProfile": {
+      "enum": [
+        "hyphenated",
+        "joined",
+        "spaced",
+        "hyphen_title",
+        "surname_caps"
+      ]
+    },
+    "GeneratedPersonNameStyle": {
+      "enum": [
+        "hyphenated",
+        "joined"
+      ]
+    },
+    "CasingProfile": {
+      "enum": [
+        "lower",
+        "sentence",
+        "title",
+        "upper"
+      ]
+    },
+    "AnnotationChannel": {
+      "enum": [
+        "reading",
+        "romanisation",
+        "englishForm"
+      ]
+    },
+    "DisplayOptions": {
+      "type": "object",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnnotationChannel"
+          }
+        },
+        "romanisationCasing": {
+          "$ref": "#/$defs/CasingProfile"
+        },
+        "personNameStyle": {
+          "$ref": "#/$defs/StyleProfile"
+        },
+        "includeAlternatives": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "channels"
+      ],
+      "additionalProperties": false
+    },
+    "ProjectedAnnotation": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/AnnotationRef"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "sourceText": {
+          "type": "string"
+        },
+        "rendered": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cautions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CautionCode"
+          }
+        }
+      },
+      "required": [
+        "ref",
+        "span",
+        "sourceText",
+        "rendered",
+        "status",
+        "confidence",
+        "alternatives",
+        "cautions"
+      ],
+      "additionalProperties": false
+    },
+    "AnnotationProjection": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string"
+        },
+        "sourceHash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "offsetUnit": {
+          "const": "utf16"
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProjectedAnnotation"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "sourceHash",
+        "offsetUnit",
+        "annotations"
+      ],
+      "additionalProperties": false
+    },
+    "RenderedVariant": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/$defs/StyleProfile"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "profile",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "DirectiveSettings": {
+      "type": "object",
+      "properties": {
+        "generatedPersonNameStyle": {
+          "$ref": "#/$defs/GeneratedPersonNameStyle"
+        },
+        "protectionConfidenceFloor": {
+          "$ref": "#/$defs/Confidence"
+        }
+      },
+      "required": [
+        "generatedPersonNameStyle"
+      ],
+      "additionalProperties": false
+    },
+    "UnresolvedSemanticSpan": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "span": {
+              "$ref": "#/$defs/Span"
+            },
+            "status": {
+              "enum": [
+                "ambiguous",
+                "conflict"
+              ]
+            }
+          },
+          "required": [
+            "span",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "span": {
+              "$ref": "#/$defs/Span"
+            },
+            "status": {
+              "enum": [
+                "unresolved",
+                "unsupported"
+              ]
+            },
+            "reason": {
+              "$ref": "#/$defs/ReasonCode"
+            }
+          },
+          "required": [
+            "span",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ProtectedSpan": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "entityId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "entityType": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "replacement": {
+          "type": "string"
+        },
+        "formKind": {
+          "$ref": "#/$defs/FormKind"
+        },
+        "assembled": {
+          "type": "boolean"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ProducedProvenance"
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/EvidenceClass"
+        },
+        "externalAttestation": {
+          "$ref": "#/$defs/ExternalAttestation"
+        },
+        "protection": {
+          "enum": [
+            "strict",
+            "preferred",
+            "fallback"
+          ]
+        },
+        "styleApplied": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeneratedPersonNameStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "span",
+        "entityId",
+        "entityType",
+        "replacement",
+        "formKind",
+        "assembled",
+        "provenance",
+        "evidenceClass",
+        "externalAttestation",
+        "protection",
+        "styleApplied",
+        "rationale"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "styleApplied": {
+                "not": {
+                  "type": "null"
+                }
+              }
+            },
+            "required": [
+              "styleApplied"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "assembled": {
+                "const": true
+              },
+              "entityType": {
+                "enum": [
+                  "person",
+                  "person.surname",
+                  "person.foreign"
+                ]
+              },
+              "formKind": {
+                "enum": [
+                  "romanisation",
+                  "hybrid"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "assembled": {
+                "const": false
+              }
+            },
+            "required": [
+              "assembled"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "styleApplied": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "enum": [
+                  "E1a",
+                  "E1b",
+                  "E1c",
+                  "E2",
+                  "E3",
+                  "E4"
+                ]
+              }
+            },
+            "required": [
+              "evidenceClass"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "protection": {
+                "const": "strict"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "const": "E5"
+              }
+            },
+            "required": [
+              "evidenceClass"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "protection": {
+                "const": "preferred"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evidenceClass": {
+                "enum": [
+                  "E6",
+                  "E7"
+                ]
+              }
+            },
+            "required": [
+              "evidenceClass"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "protection": {
+                "const": "fallback"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TranslationDirectives": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string"
+        },
+        "sourceHash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "offsetUnit": {
+          "const": "utf16"
+        },
+        "styleUsed": {
+          "$ref": "#/$defs/GeneratedPersonNameStyle"
+        },
+        "protectedSpans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProtectedSpan"
+          }
+        },
+        "termDirectives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TermDirective"
+          }
+        },
+        "unresolvedSemanticSpans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnresolvedSemanticSpan"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProjectionDiagnostic"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "sourceHash",
+        "offsetUnit",
+        "styleUsed",
+        "protectedSpans",
+        "termDirectives",
+        "unresolvedSemanticSpans",
+        "diagnostics"
+      ],
+      "additionalProperties": false
+    },
+    "ForcedTerm": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "entryId": {
+          "$ref": "#/$defs/NonEmptyString"
+        }
+      },
+      "required": [
+        "span",
+        "text",
+        "entryId"
+      ],
+      "additionalProperties": false
+    },
+    "LatticeEdgeBase": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "matchedKey": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "index",
+        "span",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "ReferenceLatticeEdge": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "matchedKey": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "lexicon",
+            "character"
+          ]
+        }
+      },
+      "required": [
+        "index",
+        "span",
+        "text",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "StoreLatticeEdge": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "text": {
+          "type": "string"
+        },
+        "matchedKey": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "user_glossary",
+            "forced"
+          ]
+        },
+        "entryId": {
+          "$ref": "#/$defs/NonEmptyString"
+        }
+      },
+      "required": [
+        "index",
+        "span",
+        "text",
+        "source",
+        "entryId"
+      ],
+      "additionalProperties": false
+    },
+    "LatticeEdge": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ReferenceLatticeEdge"
+        },
+        {
+          "$ref": "#/$defs/StoreLatticeEdge"
+        }
+      ]
+    },
+    "LatticeAlternative": {
+      "type": "object",
+      "properties": {
+        "edgeIndices": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "edgeIndices"
+      ],
+      "additionalProperties": false
+    },
+    "Lattice": {
+      "type": "object",
+      "properties": {
+        "window": {
+          "$ref": "#/$defs/Span"
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LatticeEdge"
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LatticeAlternative"
+          }
+        }
+      },
+      "required": [
+        "window",
+        "edges",
+        "alternatives"
+      ],
+      "additionalProperties": false
+    },
+    "LexiconReading": {
+      "type": "object",
+      "properties": {
+        "jyutping": {
+          "type": "string"
+        },
+        "variation": {
+          "$ref": "#/$defs/VariationKind"
+        },
+        "frequency": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceRef": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "jyutping",
+        "frequency",
+        "sourceRef"
+      ],
+      "additionalProperties": false
+    },
+    "LexEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "readings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LexiconReading"
+          }
+        }
+      },
+      "required": [
+        "key",
+        "readings"
+      ],
+      "additionalProperties": false
+    },
+    "CharEntry": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "type": "string"
+        },
+        "readings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LexiconReading"
+          }
+        }
+      },
+      "required": [
+        "character",
+        "readings"
+      ],
+      "additionalProperties": false
+    },
+    "LexiconCoverage": {
+      "type": "object",
+      "properties": {
+        "writtenCantonese": {
+          "type": "boolean"
+        },
+        "hkscs": {
+          "type": "boolean"
+        },
+        "wordLevel": {
+          "type": "boolean"
+        },
+        "frequencies": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "writtenCantonese",
+        "hkscs",
+        "wordLevel",
+        "frequencies"
+      ],
+      "additionalProperties": false
+    },
+    "CanonicalInt64Decimal": {
+      "type": "string",
+      "pattern": "^(?:(?:0|[1-9][0-9]{0,17}|[1-8][0-9]{18}|9[0-1][0-9]{17}|92[0-1][0-9]{16}|922[0-2][0-9]{15}|9223[0-2][0-9]{14}|92233[0-6][0-9]{13}|922337[0-1][0-9]{12}|92233720[0-2][0-9]{10}|922337203[0-5][0-9]{9}|9223372036[0-7][0-9]{8}|92233720368[0-4][0-9]{7}|922337203685[0-3][0-9]{6}|9223372036854[0-6][0-9]{5}|92233720368547[0-6][0-9]{4}|922337203685477[0-4][0-9]{3}|9223372036854775[0-7][0-9]{2}|922337203685477580[0-6]|9223372036854775807)|-(?:[1-9][0-9]{0,17}|[1-8][0-9]{18}|9[0-1][0-9]{17}|92[0-1][0-9]{16}|922[0-2][0-9]{15}|9223[0-2][0-9]{14}|92233[0-6][0-9]{13}|922337[0-1][0-9]{12}|92233720[0-2][0-9]{10}|922337203[0-5][0-9]{9}|9223372036[0-7][0-9]{8}|92233720368[0-4][0-9]{7}|922337203685[0-3][0-9]{6}|9223372036854[0-6][0-9]{5}|92233720368547[0-6][0-9]{4}|922337203685477[0-4][0-9]{3}|9223372036854775[0-7][0-9]{2}|922337203685477580[0-7]|9223372036854775808))$"
+    },
+    "CanonicalInteger": {
+      "type": "object",
+      "properties": {
+        "__int": {
+          "$ref": "#/$defs/CanonicalInt64Decimal"
+        }
+      },
+      "required": [
+        "__int"
+      ],
+      "additionalProperties": false
+    },
+    "CanonicalArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CanonicalValue"
+      }
+    },
+    "CanonicalObject": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "const": "__int"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/CanonicalValue"
+      }
+    },
+    "CanonicalValue": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/CanonicalInteger"
+        },
+        {
+          "$ref": "#/$defs/CanonicalArray"
+        },
+        {
+          "$ref": "#/$defs/CanonicalObject"
+        }
+      ]
+    },
+    "ProviderSnapshotEntry": {
+      "type": "object",
+      "properties": {
+        "inputHash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "output": {
+          "$ref": "#/$defs/CanonicalValue"
+        }
+      },
+      "required": [
+        "inputHash",
+        "output"
+      ],
+      "additionalProperties": false
+    },
+    "ProviderSnapshot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "snapshotFormatVersion": {
+          "const": "1"
+        },
+        "providerId": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "providerConfigHash": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProviderSnapshotEntry"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "snapshotFormatVersion",
+        "providerId",
+        "providerConfigHash",
+        "createdAt",
+        "entries"
+      ],
+      "additionalProperties": false,
+      "$comment": "Duplicate inputHash values and id recomputation are executable invariants; hashing is outside Range 0A."
+    },
+    "ResolutionTraceTarget": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "annotation"
+            },
+            "ref": {
+              "$ref": "#/$defs/AnnotationRef"
+            }
+          },
+          "required": [
+            "kind",
+            "ref"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "termResolution"
+            },
+            "index": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "index"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ResolutionTraceStep": {
+      "type": "object",
+      "properties": {
+        "ordinal": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "hit",
+            "miss",
+            "not_applicable",
+            "conflict"
+          ]
+        },
+        "entryIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidenceClass": {
+          "$ref": "#/$defs/EvidenceClass"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ordinal",
+        "source",
+        "outcome"
+      ],
+      "additionalProperties": false
+    },
+    "ResolutionTrace": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/ResolutionTraceTarget"
+        },
+        "layer": {
+          "enum": [
+            "L2",
+            "L3R",
+            "L3E",
+            "L4"
+          ]
+        },
+        "chain": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResolutionTraceStep"
+          }
+        }
+      },
+      "required": [
+        "target",
+        "layer",
+        "chain",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    "DebugSegmentation": {
+      "type": "object",
+      "properties": {
+        "inertAmbiguities": {
+          "type": "number"
+        },
+        "consequentialAmbiguities": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "inertAmbiguities",
+        "consequentialAmbiguities"
+      ],
+      "additionalProperties": false
+    },
+    "RulePackAccuracy": {
+      "type": "object",
+      "properties": {
+        "syllableExactMatch": {
+          "type": "number"
+        },
+        "wholeNameExactMatch": {
+          "type": "number"
+        },
+        "sibilantSubAccuracy": {
+          "type": "number"
+        },
+        "measuredAgainst": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "syllableExactMatch",
+        "wholeNameExactMatch",
+        "sibilantSubAccuracy",
+        "measuredAgainst"
+      ],
+      "additionalProperties": false
+    },
+    "DebugPayload": {
+      "type": "object",
+      "properties": {
+        "lattice": {
+          "$ref": "#/$defs/Lattice"
+        },
+        "trace": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResolutionTrace"
+          }
+        },
+        "segmentation": {
+          "$ref": "#/$defs/DebugSegmentation"
+        },
+        "rulePackAccuracy": {
+          "$ref": "#/$defs/RulePackAccuracy"
+        }
+      },
+      "required": [
+        "segmentation"
+      ],
+      "additionalProperties": false
+    },
+    "Analysis": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "offsetUnit": {
+          "const": "utf16"
+        },
+        "source": {
+          "type": "string"
+        },
+        "sourceHash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "versions": {
+          "$ref": "#/$defs/Versions"
+        },
+        "optionsHash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "documentContextUsed": {
+          "type": "boolean"
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Token"
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AmbiguousRegion"
+          }
+        },
+        "termResolutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TermResolution"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnalysisDiagnostic"
+          }
+        },
+        "debug": {
+          "$ref": "#/$defs/DebugPayload"
+        },
+        "ext": {
+          "$ref": "#/$defs/JsonObject"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "offsetUnit",
+        "source",
+        "sourceHash",
+        "versions",
+        "optionsHash",
+        "documentContextUsed",
+        "tokens",
+        "entities",
+        "regions",
+        "termResolutions",
+        "diagnostics"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

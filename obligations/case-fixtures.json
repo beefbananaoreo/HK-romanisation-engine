@@ -1,0 +1,2257 @@
+{
+  "formatVersion": "1.0",
+  "authority": {
+    "path": "spec/HKLanguageLabPacket-v1.7.md",
+    "bytes": 752484,
+    "sha256": "0781cd1ccc9d94e46b553f51cd8f6b66b63bb3edd11cc279dce18468558db505",
+    "packetVersion": "1.7",
+    "section5Revision": "v0.16",
+    "contractVersion": "5.0.16",
+    "schemaVersion": "1.0"
+  },
+  "purpose": "Static materialisation of CHG-050 rendering obligations and structural obligation descriptors. No rendering function, projection, engine, or independent review is implemented.",
+  "inputModel": "Rendering inputs are semantic projections of supplied unit text/kind/role/generation/grouping/licensing facts. unitFacts and unitTexts are NOT public contract fields or complete schema-valid API forms; missing syllables, spans and provenance are deliberately not invented. A later authorised renderer test must instantiate full public fixtures from verified sources.",
+  "expectedTextPolicy": "Exact packet outputs or explicitly labelled direct presentation-rule derivations only. Synthetic code-unit inputs do not claim any linguistic mapping or attested spelling.",
+  "utf16Policy": "JSON uses escapes for non-ASCII and lone surrogates. utf16beCodeUnitsHex describes literal expected UTF-16 code units only, not canonical bytes or a new canonical encoder.",
+  "profileOrder": [
+    "hyphenated",
+    "joined",
+    "spaced",
+    "hyphen_title",
+    "surname_caps"
+  ],
+  "casingOrder": [
+    "lower",
+    "sentence",
+    "title",
+    "upper"
+  ],
+  "renderingCases": [
+    {
+      "id": "STYLE-FIVE-CANONICAL",
+      "testIds": [
+        "T-ENT-059",
+        "T-API-058"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "leung",
+            "generated": false
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "given",
+            "text": "chi",
+            "generated": true
+          },
+          {
+            "id": "u2",
+            "kind": "romanised",
+            "role": "given",
+            "text": "yiu",
+            "generated": true
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u1",
+            "u2"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Leung Chi-yiu",
+          "utf16beCodeUnitsHex": "004c00650075006e00670020004300680069002d007900690075"
+        },
+        {
+          "profile": "joined",
+          "text": "Leung Chiyiu",
+          "utf16beCodeUnitsHex": "004c00650075006e00670020004300680069007900690075"
+        },
+        {
+          "profile": "spaced",
+          "text": "Leung Chi Yiu",
+          "utf16beCodeUnitsHex": "004c00650075006e006700200043006800690020005900690075"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Leung Chi-Yiu",
+          "utf16beCodeUnitsHex": "004c00650075006e00670020004300680069002d005900690075"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "LEUNG Chi-yiu",
+          "utf16beCodeUnitsHex": "004c00450055004e00470020004300680069002d007900690075"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a74.10",
+          "lineStart": 2280,
+          "lineEnd": 2290
+        },
+        {
+          "section": "\u00a75.11.3",
+          "lineStart": 3815,
+          "lineEnd": 3829
+        },
+        {
+          "section": "\u00a75.19 T-API-058",
+          "lineStart": 4597,
+          "lineEnd": 4597
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "STYLE-SEPARATED-RUNS",
+      "testIds": [
+        "T-ENT-059",
+        "T-API-059"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "leung",
+            "generated": false
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "given",
+            "text": "chi",
+            "generated": true
+          },
+          {
+            "id": "u2",
+            "kind": "romanised",
+            "role": "given",
+            "text": "lok",
+            "generated": true
+          },
+          {
+            "id": "u3",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tai",
+            "generated": true
+          },
+          {
+            "id": "u4",
+            "kind": "romanised",
+            "role": "given",
+            "text": "man",
+            "generated": true
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u1",
+            "u3",
+            "u4"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Leung Chi Lok Tai-man",
+          "utf16beCodeUnitsHex": "004c00650075006e006700200043006800690020004c006f006b0020005400610069002d006d0061006e"
+        },
+        {
+          "profile": "joined",
+          "text": "Leung Chi Lok Taiman",
+          "utf16beCodeUnitsHex": "004c00650075006e006700200043006800690020004c006f006b0020005400610069006d0061006e"
+        },
+        {
+          "profile": "spaced",
+          "text": "Leung Chi Lok Tai Man",
+          "utf16beCodeUnitsHex": "004c00650075006e006700200043006800690020004c006f006b00200054006100690020004d0061006e"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Leung Chi Lok Tai-Man",
+          "utf16beCodeUnitsHex": "004c00650075006e006700200043006800690020004c006f006b0020005400610069002d004d0061006e"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "LEUNG Chi Lok Tai-man",
+          "utf16beCodeUnitsHex": "004c00450055004e004700200043006800690020004c006f006b0020005400610069002d006d0061006e"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.2\u20133",
+          "lineStart": 3802,
+          "lineEnd": 3829
+        },
+        {
+          "section": "\u00a75.19 T-API-059",
+          "lineStart": 4598,
+          "lineEnd": 4598
+        }
+      ],
+      "expectedBasis": "FIRST_TWO_OUTPUTS_EXACT_PACKET; REMAINING_THREE_DIRECT_ASCII_RULE_DERIVATION",
+      "executed": false
+    },
+    {
+      "id": "STYLE-FORCED-SURNAME-BOUNDARY",
+      "testIds": [
+        "T-API-059"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "chan",
+            "generated": false
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tai",
+            "generated": true
+          }
+        ],
+        "grouping": [
+          [
+            0,
+            1
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u1"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "joined",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "spaced",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "CHAN Tai",
+          "utf16beCodeUnitsHex": "004300480041004e0020005400610069"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.2 step 4",
+          "lineStart": 3811,
+          "lineEnd": 3811
+        },
+        {
+          "section": "\u00a75.11.3",
+          "lineStart": 3815,
+          "lineEnd": 3827
+        },
+        {
+          "section": "\u00a75.19 T-API-059",
+          "lineStart": 4598,
+          "lineEnd": 4598
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "STYLE-UNSTYLED-PERSON",
+      "testIds": [
+        "T-ENT-059",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "chan",
+            "generated": false
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tai",
+            "generated": false
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "joined",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "spaced",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Chan Tai",
+          "utf16beCodeUnitsHex": "004300680061006e0020005400610069"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "CHAN Tai",
+          "utf16beCodeUnitsHex": "004300480041004e0020005400610069"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.3",
+          "lineStart": 3827,
+          "lineEnd": 3827
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "STYLE-NONPERSON-HYBRID",
+      "testIds": [
+        "T-API-056",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": false,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "romanised",
+            "role": "specific",
+            "text": "nei",
+            "generated": true
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "specific",
+            "text": "tun",
+            "generated": true
+          },
+          {
+            "id": "u2",
+            "kind": "translated",
+            "role": "generic",
+            "text": "Road"
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Nei Tun Road",
+          "utf16beCodeUnitsHex": "004e00650069002000540075006e00200052006f00610064"
+        },
+        {
+          "profile": "joined",
+          "text": "Nei Tun Road",
+          "utf16beCodeUnitsHex": "004e00650069002000540075006e00200052006f00610064"
+        },
+        {
+          "profile": "spaced",
+          "text": "Nei Tun Road",
+          "utf16beCodeUnitsHex": "004e00650069002000540075006e00200052006f00610064"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Nei Tun Road",
+          "utf16beCodeUnitsHex": "004e00650069002000540075006e00200052006f00610064"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "Nei Tun Road",
+          "utf16beCodeUnitsHex": "004e00650069002000540075006e00200052006f00610064"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.18 non-person example",
+          "lineStart": 4481,
+          "lineEnd": 4502
+        },
+        {
+          "section": "\u00a75.19 T-API-056/060",
+          "lineStart": 4595,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "STYLE-MIXED-FIVE",
+      "testIds": [
+        "T-ENT-059",
+        "T-API-033",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "literal",
+            "role": "western_given",
+            "text": "Peter"
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "chan",
+            "generated": false
+          },
+          {
+            "id": "u2",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tai",
+            "generated": true
+          },
+          {
+            "id": "u3",
+            "kind": "romanised",
+            "role": "given",
+            "text": "man",
+            "generated": true
+          },
+          {
+            "id": "u4",
+            "kind": "translated",
+            "role": "generic",
+            "text": "Road"
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u2",
+            "u3"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Peter Chan Tai-man Road",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069002d006d0061006e00200052006f00610064"
+        },
+        {
+          "profile": "joined",
+          "text": "Peter Chan Taiman Road",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069006d0061006e00200052006f00610064"
+        },
+        {
+          "profile": "spaced",
+          "text": "Peter Chan Tai Man Road",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e00200054006100690020004d0061006e00200052006f00610064"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Peter Chan Tai-Man Road",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069002d004d0061006e00200052006f00610064"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "Peter CHAN Tai-man Road",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300480041004e0020005400610069002d006d0061006e00200052006f00610064"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.19 T-API-033",
+          "lineStart": 4568,
+          "lineEnd": 4568
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "STYLE-MIXED-PACKET-GROUPING",
+      "testIds": [
+        "T-API-033"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "literal",
+            "role": "western_given",
+            "text": "Peter"
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "chan",
+            "generated": false
+          },
+          {
+            "id": "u2",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tai",
+            "generated": true
+          },
+          {
+            "id": "u3",
+            "kind": "romanised",
+            "role": "given",
+            "text": "man",
+            "generated": true
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u2",
+            "u3"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "Peter Chan Tai-man",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069002d006d0061006e"
+        },
+        {
+          "profile": "joined",
+          "text": "Peter Chan Taiman",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069006d0061006e"
+        },
+        {
+          "profile": "spaced",
+          "text": "Peter Chan Tai Man",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e00200054006100690020004d0061006e"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "Peter Chan Tai-Man",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300680061006e0020005400610069002d004d0061006e"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "Peter CHAN Tai-man",
+          "utf16beCodeUnitsHex": "005000650074006500720020004300480041004e0020005400610069002d006d0061006e"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.18 mixed Western and Chinese example",
+          "lineStart": 4505,
+          "lineEnd": 4528
+        },
+        {
+          "section": "\u00a75.11.3",
+          "lineStart": 3815,
+          "lineEnd": 3829
+        }
+      ],
+      "expectedBasis": "PACKET_INPUT_AND_DIRECT_FIVE_PROFILE_RULE_DERIVATION",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ENGLISH-OFFICIAL_NAME",
+      "testIds": [
+        "T-API-004",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "formKind": "official_name",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.7 VerbatimEnglishForm",
+          "lineStart": 2957,
+          "lineEnd": 2965
+        },
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.19 T-API-004/060",
+          "lineStart": 4539,
+          "lineEnd": 4539
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+      "testIds": [
+        "T-API-004",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "formKind": "native_original",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.7 VerbatimEnglishForm",
+          "lineStart": 2957,
+          "lineEnd": 2965
+        },
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.19 T-API-004/060",
+          "lineStart": 4539,
+          "lineEnd": 4539
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ENGLISH-ROMANISATION",
+      "testIds": [
+        "T-API-004",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "formKind": "romanisation",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.7 VerbatimEnglishForm",
+          "lineStart": 2957,
+          "lineEnd": 2965
+        },
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.19 T-API-004/060",
+          "lineStart": 4539,
+          "lineEnd": 4539
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ENGLISH-TRANSLATION",
+      "testIds": [
+        "T-API-004",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "formKind": "translation",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.7 VerbatimEnglishForm",
+          "lineStart": 2957,
+          "lineEnd": 2965
+        },
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.19 T-API-004/060",
+          "lineStart": 4539,
+          "lineEnd": 4539
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ENGLISH-HYBRID",
+      "testIds": [
+        "T-API-004",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "formKind": "hybrid",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.7 VerbatimEnglishForm",
+          "lineStart": 2957,
+          "lineEnd": 2965
+        },
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.19 T-API-004/060",
+          "lineStart": 4539,
+          "lineEnd": 4539
+        },
+        {
+          "section": "\u00a75.19 T-API-060",
+          "lineStart": 4599,
+          "lineEnd": 4599
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "VERBATIM-ROMANISATION-MIXED-CODE-UNITS",
+      "testIds": [
+        "T-API-062"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "formKind": "romanisation",
+        "assembled": false,
+        "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "sentence",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "title",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        },
+        {
+          "profile": "upper",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00",
+          "utf16beCodeUnitsHex": "004d0069005800650044002d00c90020006503010020013000df00204e2d65870020d8000021dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        },
+        {
+          "section": "\u00a75.19 T-API-062",
+          "lineStart": 4601,
+          "lineEnd": 4601
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; EXACT_INVARIANCE_RULE",
+      "executed": false
+    },
+    {
+      "id": "GROUPING-THREE-WORDS",
+      "testIds": [
+        "T-HKR-045",
+        "T-API-056"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "tsim",
+          "sha",
+          "tsui"
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        "composedBeforeCasing": "tsim sha tsui"
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "tsim sha tsui",
+          "utf16beCodeUnitsHex": "007400730069006d002000730068006100200074007300750069"
+        },
+        {
+          "profile": "sentence",
+          "text": "Tsim sha tsui",
+          "utf16beCodeUnitsHex": "005400730069006d002000730068006100200074007300750069"
+        },
+        {
+          "profile": "title",
+          "text": "Tsim Sha Tsui",
+          "utf16beCodeUnitsHex": "005400730069006d002000530068006100200054007300750069"
+        },
+        {
+          "profile": "upper",
+          "text": "TSIM SHA TSUI",
+          "utf16beCodeUnitsHex": "005400530049004d002000530048004100200054005300550049"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a72.2.4",
+          "lineStart": 756,
+          "lineEnd": 777
+        },
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        },
+        {
+          "section": "\u00a75.19 T-API-056",
+          "lineStart": 4595,
+          "lineEnd": 4595
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "GROUPING-ONE-WORD",
+      "testIds": [
+        "T-HKR-045",
+        "T-API-056"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "tsim",
+          "sha",
+          "tsui"
+        ],
+        "grouping": [
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "composedBeforeCasing": "tsimshatsui"
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "tsimshatsui",
+          "utf16beCodeUnitsHex": "007400730069006d0073006800610074007300750069"
+        },
+        {
+          "profile": "sentence",
+          "text": "Tsimshatsui",
+          "utf16beCodeUnitsHex": "005400730069006d0073006800610074007300750069"
+        },
+        {
+          "profile": "title",
+          "text": "Tsimshatsui",
+          "utf16beCodeUnitsHex": "005400730069006d0073006800610074007300750069"
+        },
+        {
+          "profile": "upper",
+          "text": "TSIMSHATSUI",
+          "utf16beCodeUnitsHex": "005400530049004d0053004800410054005300550049"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.6 grouping executable closure",
+          "lineStart": 2922,
+          "lineEnd": 2922
+        },
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_GROUPING_OF_PACKET_TEXTS; DIRECT_GROUPING_AND_CASING_RULE_DERIVATION; NOT_LINGUISTIC_GOLD",
+      "executed": false
+    },
+    {
+      "id": "CASING-SINGLETON-GROUPS",
+      "testIds": [
+        "T-API-061"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "tSIM",
+          "sHA",
+          "tSUI"
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "tsim sha tsui",
+          "utf16beCodeUnitsHex": "007400730069006d002000730068006100200074007300750069"
+        },
+        {
+          "profile": "sentence",
+          "text": "Tsim sha tsui",
+          "utf16beCodeUnitsHex": "005400730069006d002000730068006100200074007300750069"
+        },
+        {
+          "profile": "title",
+          "text": "Tsim Sha Tsui",
+          "utf16beCodeUnitsHex": "005400730069006d002000530068006100200054007300750069"
+        },
+        {
+          "profile": "upper",
+          "text": "TSIM SHA TSUI",
+          "utf16beCodeUnitsHex": "005400530049004d002000530048004100200054005300550049"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        },
+        {
+          "section": "\u00a75.19 T-API-061",
+          "lineStart": 4600,
+          "lineEnd": 4600
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "CASING-MERGED-GROUP",
+      "testIds": [
+        "T-API-061"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "tSIM",
+          "sHA",
+          "tSUI"
+        ],
+        "grouping": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "tsimsha tsui",
+          "utf16beCodeUnitsHex": "007400730069006d00730068006100200074007300750069"
+        },
+        {
+          "profile": "sentence",
+          "text": "Tsimsha tsui",
+          "utf16beCodeUnitsHex": "005400730069006d00730068006100200074007300750069"
+        },
+        {
+          "profile": "title",
+          "text": "Tsimsha Tsui",
+          "utf16beCodeUnitsHex": "005400730069006d00730068006100200054007300750069"
+        },
+        {
+          "profile": "upper",
+          "text": "TSIMSHA TSUI",
+          "utf16beCodeUnitsHex": "005400530049004d00530048004100200054005300550049"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        },
+        {
+          "section": "\u00a75.19 T-API-061",
+          "lineStart": 4600,
+          "lineEnd": 4600
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+      "testIds": [
+        "T-API-061"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "!\u00c4tSIM\ud800",
+          "e\u0301sHA",
+          "\udc00tSUI\u2014\u03a9"
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "!\u00c4tsim\ud800 e\u0301sha \udc00tsui\u2014\u03a9",
+          "utf16beCodeUnitsHex": "002100c4007400730069006dd8000020006503010073006800610020dc000074007300750069201403a9"
+        },
+        {
+          "profile": "sentence",
+          "text": "!\u00c4Tsim\ud800 e\u0301sha \udc00tsui\u2014\u03a9",
+          "utf16beCodeUnitsHex": "002100c4005400730069006dd8000020006503010073006800610020dc000074007300750069201403a9"
+        },
+        {
+          "profile": "title",
+          "text": "!\u00c4Tsim\ud800 E\u0301sha \udc00Tsui\u2014\u03a9",
+          "utf16beCodeUnitsHex": "002100c4005400730069006dd8000020004503010073006800610020dc000054007300750069201403a9"
+        },
+        {
+          "profile": "upper",
+          "text": "!\u00c4TSIM\ud800 E\u0301SHA \udc00TSUI\u2014\u03a9",
+          "utf16beCodeUnitsHex": "002100c4005400530049004dd8000020004503010053004800410020dc000054005300550049201403a9"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        },
+        {
+          "section": "\u00a75.19 T-API-061",
+          "lineStart": 4600,
+          "lineEnd": 4600
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; DIRECT_ASCII_ONLY_RULE_DERIVATION",
+      "executed": false
+    },
+    {
+      "id": "CASING-NO-ASCII-LETTER",
+      "testIds": [
+        "T-API-061"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderRomanisation",
+      "input": {
+        "assembled": true,
+        "unitTexts": [
+          "\u03a9\ud800",
+          "\u4e2d\u6587\u0301"
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "lower",
+          "text": "\u03a9\ud800 \u4e2d\u6587\u0301",
+          "utf16beCodeUnitsHex": "03a9d80000204e2d65870301"
+        },
+        {
+          "profile": "sentence",
+          "text": "\u03a9\ud800 \u4e2d\u6587\u0301",
+          "utf16beCodeUnitsHex": "03a9d80000204e2d65870301"
+        },
+        {
+          "profile": "title",
+          "text": "\u03a9\ud800 \u4e2d\u6587\u0301",
+          "utf16beCodeUnitsHex": "03a9d80000204e2d65870301"
+        },
+        {
+          "profile": "upper",
+          "text": "\u03a9\ud800 \u4e2d\u6587\u0301",
+          "utf16beCodeUnitsHex": "03a9d80000204e2d65870301"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.1",
+          "lineStart": 3784,
+          "lineEnd": 3802
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; DIRECT_ASCII_ONLY_RULE_DERIVATION",
+      "executed": false
+    },
+    {
+      "id": "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+      "testIds": [
+        "T-API-033",
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": true,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "literal",
+            "role": "western_given",
+            "text": "p\u00c9TER\ud800"
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "surname",
+            "text": "cHAN",
+            "generated": false
+          },
+          {
+            "id": "u2",
+            "kind": "romanised",
+            "role": "given",
+            "text": "tAI",
+            "generated": true
+          },
+          {
+            "id": "u3",
+            "kind": "romanised",
+            "role": "given",
+            "text": "mAN",
+            "generated": true
+          },
+          {
+            "id": "u4",
+            "kind": "translated",
+            "role": "generic",
+            "text": "rOAD e\u0301\udc00"
+          }
+        ],
+        "grouping": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        "styleApplicable": {
+          "scope": "givenName",
+          "unitIds": [
+            "u2",
+            "u3"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "p\u00c9TER\ud800 Chan Tai-man rOAD e\u0301\udc00",
+          "utf16beCodeUnitsHex": "007000c9005400450052d8000020004300680061006e0020005400610069002d006d0061006e00200072004f00410044002000650301dc00"
+        },
+        {
+          "profile": "joined",
+          "text": "p\u00c9TER\ud800 Chan Taiman rOAD e\u0301\udc00",
+          "utf16beCodeUnitsHex": "007000c9005400450052d8000020004300680061006e0020005400610069006d0061006e00200072004f00410044002000650301dc00"
+        },
+        {
+          "profile": "spaced",
+          "text": "p\u00c9TER\ud800 Chan Tai Man rOAD e\u0301\udc00",
+          "utf16beCodeUnitsHex": "007000c9005400450052d8000020004300680061006e00200054006100690020004d0061006e00200072004f00410044002000650301dc00"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "p\u00c9TER\ud800 Chan Tai-Man rOAD e\u0301\udc00",
+          "utf16beCodeUnitsHex": "007000c9005400450052d8000020004300680061006e0020005400610069002d004d0061006e00200072004f00410044002000650301dc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "p\u00c9TER\ud800 CHAN Tai-man rOAD e\u0301\udc00",
+          "utf16beCodeUnitsHex": "007000c9005400450052d8000020004300480041004e0020005400610069002d006d0061006e00200072004f00410044002000650301dc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.11.2\u20133",
+          "lineStart": 3802,
+          "lineEnd": 3829
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; DIRECT_ASCII_AND_LITERAL_INVARIANCE_RULE_DERIVATION",
+      "executed": false
+    },
+    {
+      "id": "BASE-LITERAL-OWNS-FIRST-ASCII",
+      "testIds": [
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": false,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "literal",
+            "text": "pETER"
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "specific",
+            "text": "chAN",
+            "generated": false
+          }
+        ],
+        "grouping": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "pETERchan",
+          "utf16beCodeUnitsHex": "00700045005400450052006300680061006e"
+        },
+        {
+          "profile": "joined",
+          "text": "pETERchan",
+          "utf16beCodeUnitsHex": "00700045005400450052006300680061006e"
+        },
+        {
+          "profile": "spaced",
+          "text": "pETERchan",
+          "utf16beCodeUnitsHex": "00700045005400450052006300680061006e"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "pETERchan",
+          "utf16beCodeUnitsHex": "00700045005400450052006300680061006e"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "pETERchan",
+          "utf16beCodeUnitsHex": "00700045005400450052006300680061006e"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.2 steps 2\u20133",
+          "lineStart": 3809,
+          "lineEnd": 3810
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_NONPERSON_GROUP; FIRST_ASCII_LETTER_OWNERSHIP_RULE; NOT_LINGUISTIC_GOLD",
+      "executed": false
+    },
+    {
+      "id": "BASE-ROMANISED-OWNS-FIRST-ASCII",
+      "testIds": [
+        "T-API-060"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderPersonName",
+      "input": {
+        "assembled": true,
+        "person": false,
+        "unitFacts": [
+          {
+            "id": "u0",
+            "kind": "literal",
+            "text": "\u00c9-"
+          },
+          {
+            "id": "u1",
+            "kind": "romanised",
+            "role": "specific",
+            "text": "chAN",
+            "generated": false
+          }
+        ],
+        "grouping": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "profile": "hyphenated",
+          "text": "\u00c9-Chan",
+          "utf16beCodeUnitsHex": "00c9002d004300680061006e"
+        },
+        {
+          "profile": "joined",
+          "text": "\u00c9-Chan",
+          "utf16beCodeUnitsHex": "00c9002d004300680061006e"
+        },
+        {
+          "profile": "spaced",
+          "text": "\u00c9-Chan",
+          "utf16beCodeUnitsHex": "00c9002d004300680061006e"
+        },
+        {
+          "profile": "hyphen_title",
+          "text": "\u00c9-Chan",
+          "utf16beCodeUnitsHex": "00c9002d004300680061006e"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "\u00c9-Chan",
+          "utf16beCodeUnitsHex": "00c9002d004300680061006e"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.2 steps 2\u20133",
+          "lineStart": 3809,
+          "lineEnd": 3810
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_NONPERSON_GROUP; FIRST_ASCII_LETTER_OWNERSHIP_RULE; NOT_LINGUISTIC_GOLD",
+      "executed": false
+    },
+    {
+      "id": "VARIANTS-EMPTY",
+      "testIds": [
+        "T-API-063"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderVariants",
+      "input": {
+        "formCase": "STYLE-FIVE-CANONICAL",
+        "profiles": []
+      },
+      "expected": [],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11.4",
+          "lineStart": 3831,
+          "lineEnd": 3843
+        },
+        {
+          "section": "\u00a75.19 T-API-063",
+          "lineStart": 4602,
+          "lineEnd": 4602
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "VARIANTS-ORDER-AND-DUPLICATES",
+      "testIds": [
+        "T-API-063"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderVariants",
+      "input": {
+        "formCase": "STYLE-FIVE-CANONICAL",
+        "profiles": [
+          "joined",
+          "joined",
+          "hyphenated"
+        ]
+      },
+      "expected": [
+        {
+          "profile": "joined",
+          "text": "Leung Chiyiu"
+        },
+        {
+          "profile": "joined",
+          "text": "Leung Chiyiu"
+        },
+        {
+          "profile": "hyphenated",
+          "text": "Leung Chi-yiu"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a74.10 renderVariants example",
+          "lineStart": 2295,
+          "lineEnd": 2303
+        },
+        {
+          "section": "\u00a75.11.4",
+          "lineStart": 3831,
+          "lineEnd": 3843
+        },
+        {
+          "section": "\u00a75.19 T-API-063",
+          "lineStart": 4602,
+          "lineEnd": 4602
+        }
+      ],
+      "expectedBasis": "EXACT_PACKET_VECTOR",
+      "executed": false
+    },
+    {
+      "id": "VARIANTS-VERBATIM-DUPLICATES",
+      "testIds": [
+        "T-API-004",
+        "T-API-063"
+      ],
+      "status": "RENDERING_OBLIGATION_ONLY",
+      "function": "renderVariants",
+      "input": {
+        "formCase": "VERBATIM-ENGLISH-OFFICIAL_NAME",
+        "profiles": [
+          "surname_caps",
+          "joined",
+          "surname_caps"
+        ]
+      },
+      "expected": [
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+        },
+        {
+          "profile": "joined",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+        },
+        {
+          "profile": "surname_caps",
+          "text": "MiXeD-\u00c9 e\u0301 \u0130\u00df \u4e2d\u6587 \ud800!\udc00"
+        }
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11 RULE-API-6",
+          "lineStart": 3782,
+          "lineEnd": 3782
+        },
+        {
+          "section": "\u00a75.11.4",
+          "lineStart": 3831,
+          "lineEnd": 3843
+        }
+      ],
+      "expectedBasis": "SYNTHETIC_CODE_UNIT_TRANSPORT_INPUT; VERBATIM_RULE_PLUS_ORDERED_MAP_RULE",
+      "executed": false
+    }
+  ],
+  "structuralObligations": [
+    {
+      "id": "STRUCT-GROUPING-FOUR-SURFACES",
+      "testIds": [
+        "T-HKR-045",
+        "T-API-055",
+        "T-API-057"
+      ],
+      "surfaces": [
+        "AssembledRomanisation",
+        "AssembledEnglishForm",
+        "MemoryRomanisation.assembled=true",
+        "MemoryEnglishForm.assembled=true"
+      ],
+      "unitsLength": 3,
+      "accept": [
+        [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        [
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      ],
+      "reject": [
+        {
+          "grouping": [],
+          "reason": "empty grouping"
+        },
+        {
+          "grouping": [
+            []
+          ],
+          "reason": "empty inner group"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              2
+            ]
+          ],
+          "reason": "omission"
+        },
+        {
+          "grouping": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "reason": "overlap / duplicate"
+        },
+        {
+          "grouping": [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            [
+              2
+            ]
+          ],
+          "reason": "reordering"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "reason": "duplicate"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              3
+            ]
+          ],
+          "reason": "out of range"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              -1
+            ]
+          ],
+          "reason": "negative"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              1.5
+            ]
+          ],
+          "reason": "fractional"
+        },
+        {
+          "grouping": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              9007199254740992
+            ]
+          ],
+          "reason": "unsafe public integer"
+        }
+      ],
+      "runtimeOnlyMalformedScalars": [
+        "NaN",
+        "Infinity",
+        "-Infinity"
+      ],
+      "runtimeOnlyScalarNote": "Labels designate actual non-finite runtime numbers to instantiate in a test harness; they are not valid public string replacements.",
+      "additionalReject": [
+        "units=[] regardless of grouping",
+        "missing units",
+        "missing grouping",
+        "an empty inner group anywhere"
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.6 grouping executable closure",
+          "lineStart": 2922,
+          "lineEnd": 2922
+        },
+        {
+          "section": "\u00a75.19 T-API-055/057",
+          "lineStart": 4594,
+          "lineEnd": 4596
+        }
+      ],
+      "status": "STRUCTURAL_EXECUTION_REQUIRED",
+      "executedByThisArtefact": false
+    },
+    {
+      "id": "STRUCT-STYLE-REFERENCE-ELIGIBILITY",
+      "testIds": [
+        "T-API-033",
+        "T-API-057",
+        "T-API-059"
+      ],
+      "analysisReferenceField": "styleApplicable.unitIds",
+      "memoryReferenceField": "styleApplicable.unitIndices",
+      "eligibleUnitFacts": {
+        "kind": "romanised",
+        "role": "given",
+        "generated": true
+      },
+      "acceptResolvedSequences": [
+        [
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3,
+          4
+        ]
+      ],
+      "rejectReferenceConditions": [
+        "empty reference array",
+        "duplicate references",
+        "strictly decreasing or reordered resolved positions",
+        "unresolved id",
+        "id resolving to more than one unit",
+        "out-of-range memory index",
+        "fractional, negative, non-finite or unsafe memory index",
+        "surname target",
+        "literal target",
+        "translated target",
+        "prefix target",
+        "non-generated romanised target",
+        "non-person outer Entity holding styled form",
+        "styleApplicable on person:false",
+        "styleApplicable on assembled:false",
+        "styleApplicable:false",
+        "memory unitIds / source id or span"
+      ],
+      "noAutomaticExpansion": true,
+      "authorityLocators": [
+        {
+          "section": "\u00a74.10 RULE-ENT-11/11a",
+          "lineStart": 2262,
+          "lineEnd": 2266
+        },
+        {
+          "section": "\u00a75.7 assembled L3E legality",
+          "lineStart": 3049,
+          "lineEnd": 3049
+        },
+        {
+          "section": "\u00a75.10.2 memory forms",
+          "lineStart": 3526,
+          "lineEnd": 3565
+        }
+      ],
+      "status": "STRUCTURAL_EXECUTION_REQUIRED",
+      "executedByThisArtefact": false
+    },
+    {
+      "id": "STRUCT-BRANCH-CLOSURE",
+      "testIds": [
+        "T-API-055",
+        "T-API-057"
+      ],
+      "reject": [
+        "assembled form with text",
+        "assembled form with styleVariants",
+        "verbatim form with units",
+        "verbatim form with grouping",
+        "verbatim English with person or styleApplicable",
+        "assembled English official_name/native_original/translation",
+        "all-literal or all-translated assembled English",
+        "romanisation formKind with any literal/translated unit",
+        "hybrid formKind without both romanised and literal/translated kinds"
+      ],
+      "preserve": [
+        "verbatim text exactly",
+        "memory branches span/id-free",
+        "assembled English person and non-person branches"
+      ],
+      "authorityLocators": [
+        {
+          "section": "\u00a75.6 RULE-API-10",
+          "lineStart": 2924,
+          "lineEnd": 2928
+        },
+        {
+          "section": "\u00a75.7 assembled L3E legality",
+          "lineStart": 3049,
+          "lineEnd": 3049
+        },
+        {
+          "section": "\u00a75.10.2 memory forms",
+          "lineStart": 3526,
+          "lineEnd": 3565
+        }
+      ],
+      "status": "STRUCTURAL_EXECUTION_REQUIRED",
+      "executedByThisArtefact": false
+    },
+    {
+      "id": "STRUCT-PROFILE-DOMAINS",
+      "testIds": [
+        "T-API-030"
+      ],
+      "styleProfileExact": [
+        "hyphenated",
+        "joined",
+        "spaced",
+        "hyphen_title",
+        "surname_caps"
+      ],
+      "casingProfileExact": [
+        "lower",
+        "sentence",
+        "title",
+        "upper"
+      ],
+      "generatedPersonNameStyleExact": [
+        "hyphenated",
+        "joined"
+      ],
+      "narrowFields": [
+        "DirectiveSettings.generatedPersonNameStyle",
+        "TranslationDirectives.styleUsed",
+        "ProtectedSpan.styleApplied"
+      ],
+      "narrowFieldsReject": [
+        "spaced",
+        "hyphen_title",
+        "surname_caps"
+      ],
+      "styleProfileReject": [
+        "given_first",
+        "concat_title",
+        "unknown"
+      ],
+      "note": "ProtectedSpan.styleApplied nullability follows its original contract; this obligation narrows only non-null style values. No global givenNameJoin default is introduced.",
+      "authorityLocators": [
+        {
+          "section": "\u00a75.11 profile types",
+          "lineStart": 3727,
+          "lineEnd": 3740
+        },
+        {
+          "section": "\u00a75.19 T-API-030",
+          "lineStart": 4540,
+          "lineEnd": 4540
+        }
+      ],
+      "status": "STRUCTURAL_EXECUTION_REQUIRED",
+      "executedByThisArtefact": false
+    }
+  ],
+  "crossRuntimeObligation": {
+    "testIds": [
+      "T-API-064"
+    ],
+    "gateIds": [
+      "G35"
+    ],
+    "status": "RENDERING_OBLIGATION_ONLY",
+    "executed": false,
+    "coversCaseIds": [
+      "STYLE-FIVE-CANONICAL",
+      "STYLE-SEPARATED-RUNS",
+      "STYLE-FORCED-SURNAME-BOUNDARY",
+      "STYLE-UNSTYLED-PERSON",
+      "STYLE-NONPERSON-HYBRID",
+      "STYLE-MIXED-FIVE",
+      "STYLE-MIXED-PACKET-GROUPING",
+      "VERBATIM-ENGLISH-OFFICIAL_NAME",
+      "VERBATIM-ENGLISH-NATIVE_ORIGINAL",
+      "VERBATIM-ENGLISH-ROMANISATION",
+      "VERBATIM-ENGLISH-TRANSLATION",
+      "VERBATIM-ENGLISH-HYBRID",
+      "VERBATIM-ROMANISATION-MIXED-CODE-UNITS",
+      "GROUPING-THREE-WORDS",
+      "GROUPING-ONE-WORD",
+      "CASING-SINGLETON-GROUPS",
+      "CASING-MERGED-GROUP",
+      "CASING-NONASCII-PUNCTUATION-LONE-SURROGATES",
+      "CASING-NO-ASCII-LETTER",
+      "STYLE-MIXED-CODE-UNIT-INVARIANCE",
+      "BASE-LITERAL-OWNS-FIRST-ASCII",
+      "BASE-ROMANISED-OWNS-FIRST-ASCII",
+      "VARIANTS-EMPTY",
+      "VARIANTS-ORDER-AND-DUPLICATES",
+      "VARIANTS-VERBATIM-DUPLICATES"
+    ],
+    "requiredEvidence": [
+      "two independent conforming renderer runtimes",
+      "identical ordered UTF-16 code-unit outputs per case and requested profile",
+      "identical result-string bytes under the unchanged accepted \u00a75.15.2 string encoding",
+      "renderVariants length, order and duplicate multiplicity preserved before per-string comparison"
+    ],
+    "canonicalEncoder": "reuse accepted encoder unchanged; no new encoder in this directory",
+    "authorityLocators": [
+      {
+        "section": "\u00a75.15.2",
+        "lineStart": 4277,
+        "lineEnd": 4300
+      },
+      {
+        "section": "\u00a75.19 T-API-064",
+        "lineStart": 4603,
+        "lineEnd": 4603
+      },
+      {
+        "section": "\u00a76.11 G35",
+        "lineStart": 4957,
+        "lineEnd": 4957
+      }
+    ]
+  }
+}
