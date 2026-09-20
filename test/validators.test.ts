@@ -1028,7 +1028,7 @@ test("T-API-034: E3-E7 imports are invalid/no-write and apply reports only legal
     store: "pronunciation",
     writesApplied: false,
     userDataVersion: 1,
-    rows: [{ ...updateRow, errors: [{ code: "bad", message: "not written" }] }],
+    rows: [{ ...updateRow, errors: [{ code: "bad", message: "not written", path: [] }] }],
   };
   assertValid(validateStoreImportEnvelope(erroredUpdate));
   assertIssue(validateStoreImportEnvelope({ ...erroredUpdate, writesApplied: true }), "APPLY_WRITES_APPLIED");
