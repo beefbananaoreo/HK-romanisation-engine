@@ -408,6 +408,16 @@ function validateCandidate(
   } else if (hasOwn(candidate, "support")) {
     validateKnownStrings(candidate.support, CONFIDENCES, `${path}.support`, "CANDIDATE_SUPPORT", "§7.3.1", issues);
   }
+  if (candidate.provenance === "rule_engine" && hasOwn(candidate, "support")
+      && !["low", "none"].includes(String(candidate.support))) {
+    addIssue(issues, "CANDIDATE_RULE_ENGINE_SUPPORT_CAP", `${path}.support`, "Rule-engine candidate support is capped at low when supplied.", "§7.3.1–2; INV-5");
+  }
+  if (hasOwn(candidate, "scopeDowngrade")
+      && (candidate.scopeDowngrade !== "class_applied_to_individual"
+        || candidate.evidenceClass !== "E6"
+        || (hasOwn(candidate, "support") && !["low", "none"].includes(String(candidate.support))))) {
+    addIssue(issues, "CANDIDATE_SCOPE_DOWNGRADE", `${path}.scopeDowngrade`, "Candidate scopeDowngrade requires E6 and, when supplied, low/none support.", "§5.5; §7.3.1–3");
+  }
   if (hasOwn(candidate, "attestationCount") && (typeof candidate.attestationCount !== "number" || !Number.isFinite(candidate.attestationCount))) {
     addIssue(issues, "ATTESTATION_COUNT_TYPE", `${path}.attestationCount`, "attestationCount must be a finite number.", "§5.5 CandidateBase<T>");
   }
@@ -476,7 +486,7 @@ export function validateValueEnvelope(
       break;
   }
   if (typeof input.ranked !== "boolean") addIssue(issues, "VALUE_RANKED", "$.ranked", "ranked must be boolean.", "§5.5");
-  alternatives.forEach((candidate, index) => {
+  Array.from(alternatives).forEach((candidate, index) => {
     validateCandidate(candidate, input.ranked === true, options.layer, `$.alternatives[${index}]`, issues, producer);
   });
   const provenanceSet = producer ? PRODUCED_PROVENANCES : ALL_PROVENANCES;
@@ -495,6 +505,9 @@ export function validateValueEnvelope(
   }
   if (input.provenance === "rule_engine" && !["low", "none"].includes(String(input.confidence))) {
     addIssue(issues, "RULE_ENGINE_CONFIDENCE_CAP", "$.confidence", "rule_engine confidence is capped at low.", "§7.3.2");
+  }
+  if (input.provenance === "inherited" && input.confidence === "high") {
+    addIssue(issues, "INHERITED_CONFIDENCE_CAP", "$.confidence", "Inherited confidence is capped at medium.", "§7.3.2; RULE-ENT-9");
   }
   if (hasOwn(input, "scopeDowngrade")) {
     if (input.scopeDowngrade !== "class_applied_to_individual" || input.evidenceClass !== "E6" || !["low", "none"].includes(String(input.confidence))) {
@@ -833,7 +846,7 @@ export function validateRomanisation(
 }
 
 /** GroupedAlignment closure for one Reading and optional owner span. */
-export function validateReadingAlignment(input: unknown, ownerSpan?: [number, number]): ValidationResult {
+export function validateReadingAlignment(input: unknown, ownerSpan?: [number, number], source?: string): ValidationResult {
   const issues: ValidationIssue[] = [];
   if (!isRecord(input) || !Array.isArray(input.syllables) || !Array.isArray(input.alignmentGroups)) {
     addIssue(issues, "READING_SHAPE", "$", "Reading requires syllables and alignmentGroups arrays.", "§5.6");
@@ -842,10 +855,22 @@ export function validateReadingAlignment(input: unknown, ownerSpan?: [number, nu
   const syllables: unknown[] = input.syllables;
   const alignmentGroups: unknown[] = input.alignmentGroups;
   const membership = new Map<number, number>();
+  const alignedSpans: Array<{ span: [number, number]; path: string }> = [];
+  const recordSpan = (span: [number, number], path: string): void => {
+    alignedSpans.push({ span, path });
+    if (source !== undefined && (isUnsafeTextBoundary(source, span[0]) || isUnsafeTextBoundary(source, span[1]))) {
+      addIssue(issues, "READING_UNSAFE_BOUNDARY", path, "Reading alignment must not split a protected UTF-16/text sequence.", "INV-4; T-JP-041; G3");
+    }
+  };
   let previousGroupEnd = -1;
-  alignmentGroups.forEach((group, groupIndex) => {
+  Array.from(alignmentGroups).forEach((group, groupIndex) => {
     const path = `$.alignmentGroups[${groupIndex}]`;
-    if (!isRecord(group) || !validateSpan(group.span, `${path}.span`, issues, ownerSpan)) return;
+    if (!isRecord(group)) {
+      addIssue(issues, "GROUP_OBJECT", path, "GroupedAlignment must be an object.", "§5.6");
+      return;
+    }
+    if (!validateSpan(group.span, `${path}.span`, issues, ownerSpan)) return;
+    recordSpan(group.span, `${path}.span`);
     if (group.span[0] < previousGroupEnd) addIssue(issues, "GROUP_ORDER", `${path}.span`, "Alignment groups must be ordered and non-overlapping.", "§5.6 closure rule");
     previousGroupEnd = group.span[1];
     if (!Array.isArray(group.syllableIndices) || group.syllableIndices.length < 2) {
@@ -853,7 +878,7 @@ export function validateReadingAlignment(input: unknown, ownerSpan?: [number, nu
       return;
     }
     let previous = -1;
-    group.syllableIndices.forEach((raw, index) => {
+    Array.from(group.syllableIndices).forEach((raw, index) => {
       const indexPath = `${path}.syllableIndices[${index}]`;
       if (!Number.isInteger(raw) || Number(raw) < 0 || Number(raw) >= syllables.length) {
         addIssue(issues, "GROUP_INDEX_RANGE", indexPath, "Grouped syllable index must be an in-range integer.", "§5.6 closure rule");
@@ -867,7 +892,8 @@ export function validateReadingAlignment(input: unknown, ownerSpan?: [number, nu
       if (!isRecord(syllable) || syllable.align !== "grouped") addIssue(issues, "GROUP_MEMBER_ALIGN", indexPath, "Only grouped syllables may be group members.", "§5.6 closure rule");
     });
   });
-  syllables.forEach((syllable, index) => {
+  let previousSyllableStart = -1;
+  Array.from(syllables).forEach((syllable, index) => {
     const path = `$.syllables[${index}]`;
     if (!isRecord(syllable)) {
       addIssue(issues, "SYLLABLE_OBJECT", path, "Syllable must be an object.", "§5.6");
@@ -882,10 +908,27 @@ export function validateReadingAlignment(input: unknown, ownerSpan?: [number, nu
       if (syllable.span !== null) addIssue(issues, "GROUPED_SPAN_NULL", `${path}.span`, "Grouped syllable has null individual span.", "§5.6");
       if (count !== 1) addIssue(issues, "GROUP_MEMBERSHIP", path, "Every grouped syllable belongs to exactly one group.", "§5.6 closure rule");
     } else {
-      validateSpan(syllable.span, `${path}.span`, issues, ownerSpan);
+      if (validateSpan(syllable.span, `${path}.span`, issues, ownerSpan)) {
+        if (syllable.span[0] < previousSyllableStart) {
+          addIssue(issues, "SYLLABLE_SPAN_ORDER", `${path}.span`, "Individual syllable spans must follow source order.", "§3.2.1; INV-14");
+        }
+        previousSyllableStart = syllable.span[0];
+        recordSpan(syllable.span, `${path}.span`);
+      }
       if (count !== 0) addIssue(issues, "NON_GROUP_MEMBER", path, "Non-grouped syllable must not appear in a group.", "§5.6 closure rule");
     }
   });
+  // Check the union: separate ordered lists can still overlap each other.
+  alignedSpans.sort((left, right) => left.span[0] - right.span[0] || left.span[1] - right.span[1]);
+  let furthestEnd = -1;
+  for (const { span, path } of alignedSpans) {
+    // The shared Span domain allows empty half-open intervals; they occupy no text.
+    if (span[0] === span[1]) continue;
+    if (span[0] < furthestEnd) {
+      addIssue(issues, "READING_SPAN_OVERLAP", path, "Individual and grouped alignment spans must not overlap.", "§3.2.1; INV-14");
+    }
+    furthestEnd = Math.max(furthestEnd, span[1]);
+  }
   return finish(issues);
 }
 
@@ -1053,7 +1096,7 @@ export function validateStoreImportEnvelope(input: unknown): ValidationResult {
   }
   let legalRows = 0;
   let legalAdds = 0;
-  input.rows.forEach((row, index) => {
+  Array.from(input.rows).forEach((row, index) => {
     const path = `$.rows[${index}]`;
     if (!isRecord(row)) {
       addIssue(issues, "IMPORT_ROW", path, "Import row must be an object.", "§5.9");
@@ -1194,6 +1237,12 @@ function validateMemoryChannel(input: unknown, channel: "reading" | "romanisatio
   if (input.status === "fallback" && !["low", "none"].includes(String(input.confidence))) {
     addIssue(issues, "MEMORY_FALLBACK_CONFIDENCE", `${path}.confidence`, "Fallback memory confidence is capped at low.", "§7.3.1");
   }
+  if (input.provenance === "rule_engine" && !["low", "none"].includes(String(input.confidence))) {
+    addIssue(issues, "MEMORY_RULE_ENGINE_CONFIDENCE", `${path}.confidence`, "Memory rule_engine confidence remains capped at low.", "§5.10.2; §7.3.2; INV-5");
+  }
+  if (input.provenance === "inherited" && input.confidence === "high") {
+    addIssue(issues, "MEMORY_INHERITED_CONFIDENCE", `${path}.confidence`, "Memory inherited confidence remains capped at medium.", "§5.10.2; §7.3.2; RULE-ENT-9");
+  }
   if (!Array.isArray(input.cautions)) {
     addIssue(issues, "MEMORY_CAUTIONS", `${path}.cautions`, "Memory channel cautions must be an array.", "§5.10.2");
   } else {
@@ -1222,7 +1271,7 @@ export function validateDocumentContextSemantics(input: unknown): ValidationResu
     return finish(issues);
   }
   const refs = new Set<string>();
-  input.entities.forEach((entry, index) => {
+  Array.from(input.entities).forEach((entry, index) => {
     const path = `$.entities[${index}]`;
     if (!isRecord(entry)) {
       addIssue(issues, "MEMORY_ENTRY_OBJECT", path, "EntityMemoryEntry must be an object.", "§5.10.2");
@@ -1347,7 +1396,8 @@ export function validateCanonicalValue(input: unknown): ValidationResult {
 export function validateProviderSnapshotShape(input: unknown): ValidationResult {
   const issues: ValidationIssue[] = [];
   if (!isRecord(input)
-      || !/^[0-9a-f]{64}$/u.test(String(input.id))
+      || typeof input.id !== "string"
+      || !/^[0-9a-f]{64}$/u.test(input.id)
       || input.snapshotFormatVersion !== "1"
       || typeof input.providerId !== "string"
       || typeof input.providerConfigHash !== "string"
@@ -1467,9 +1517,8 @@ export function validateEngineCreationResult(
   if (!hasSnapshotDiagnostic) {
     addIssue(issues, "ENGINE_CREATION_FAILURE_CODE", "$.diagnostics", "Fatal snapshot failure includes PROVIDER_SNAPSHOT_INVALID.", "§5.10; §5.13.2");
   }
-  if (snapshotSupplied && !snapshotInvalid) {
-    addIssue(issues, "ENGINE_CREATION_UNEXPECTED_FAILURE", "$.ok", "A semantically valid supplied snapshot does not take the fatal snapshot branch.", "§5.10; §5.13.2");
-  }
+  // Shape validity cannot establish RULE-API-20 identity validity. Hashing is
+  // outside this validator, so a shape-valid snapshot may still fail creation.
   if (!snapshotSupplied && context.lexiconCoverage !== undefined) {
     addIssue(issues, "ENGINE_CREATION_UNEXPECTED_FAILURE", "$.ok", "No fatal non-snapshot creation condition is defined; lexicon capability loss remains non-fatal where specified.", "§5.10; §5.21; T-API-011");
   }
@@ -1484,9 +1533,10 @@ export function validateLattice(input: unknown, source?: string): ValidationResu
     return finish(issues);
   }
   const window: [number, number] = input.window;
+  if (source !== undefined) validateSpan(window, "$.window", issues, [0, source.length]);
   const edges: unknown[] = input.edges;
   const alternatives: unknown[] = input.alternatives;
-  edges.forEach((edge, index) => {
+  Array.from(edges).forEach((edge, index) => {
     const path = `$.edges[${index}]`;
     if (!isRecord(edge)) {
       addIssue(issues, "LATTICE_EDGE", path, "Lattice edge must be an object.", "§5.13");
@@ -1504,7 +1554,7 @@ export function validateLattice(input: unknown, source?: string): ValidationResu
     }
   });
   const paths = new Set<string>();
-  alternatives.forEach((alternative, index) => {
+  Array.from(alternatives).forEach((alternative, index) => {
     const path = `$.alternatives[${index}].edgeIndices`;
     if (!isRecord(alternative) || !Array.isArray(alternative.edgeIndices) || alternative.edgeIndices.length === 0) {
       addIssue(issues, "LATTICE_PATH", path, "Alternative requires non-empty edgeIndices.", "§5.13");
@@ -1514,7 +1564,7 @@ export function validateLattice(input: unknown, source?: string): ValidationResu
     if (paths.has(signature)) addIssue(issues, "LATTICE_DUPLICATE_PATH", path, "Duplicate paths are forbidden.", "§5.13 minimal lattice");
     paths.add(signature);
     let cursor = window[0];
-    alternative.edgeIndices.forEach((raw, edgePosition) => {
+    Array.from(alternative.edgeIndices).forEach((raw, edgePosition) => {
       if (!Number.isInteger(raw) || Number(raw) < 0 || Number(raw) >= edges.length) {
         addIssue(issues, "LATTICE_PATH_INDEX", `${path}[${edgePosition}]`, "Path index must resolve to an edge.", "§5.13");
         return;
@@ -1612,6 +1662,46 @@ function rangesPartiallyOverlap(left: [number, number], right: [number, number])
   return overlap && !contains;
 }
 
+function validateInheritedChannel(
+  inherited: Record<string, unknown>,
+  layer: ContractLayer,
+  path: string,
+  candidate: boolean,
+  entities: ReadonlyMap<string, Record<string, unknown>>,
+  documentContext: unknown,
+  issues: ValidationIssue[],
+): void {
+  const reference = inherited.inheritedFrom;
+  if (inherited.provenance !== "inherited" || !isRecord(reference)) return;
+  const channel = layer === "L2" ? "reading" : layer === "L3R" ? "romanisation" : layer === "L3E" ? "englishForm" : undefined;
+  if (channel === undefined) return;
+  let antecedent: unknown;
+  if (reference.kind === "analysis" && typeof reference.entityId === "string") {
+    antecedent = entities.get(reference.entityId);
+  } else if (reference.kind === "documentContext" && isRecord(documentContext)
+      && documentContext.id === reference.contextId && Array.isArray(documentContext.entities)) {
+    antecedent = documentContext.entities.find((entry) => isRecord(entry) && entry.ref === reference.ref);
+  }
+  // Reference validation reports missing supplied owners. An omitted context
+  // leaves antecedent content unavailable and permits only shape-level checks.
+  if (!isRecord(antecedent)) return;
+  const sourceChannel = antecedent[channel];
+  if (!isRecord(sourceChannel)
+      || (sourceChannel.status !== "resolved" && sourceChannel.status !== "fallback")
+      || sourceChannel.value === null || sourceChannel.value === undefined) {
+    addIssue(issues, "INHERITANCE_CHANNEL_SELECTED", `${path}.inheritedFrom`, "Inheritance requires a selected value in the antecedent's matching channel.", "RULE-API-22; RULE-API-24; §5.10.1");
+    return;
+  }
+  const confidenceField = candidate ? "support" : "confidence";
+  if (candidate && !hasOwn(inherited, confidenceField)) return;
+  const bands = ["none", "low", "medium", "high"];
+  const sourceBand = bands.indexOf(String(sourceChannel.confidence));
+  const inheritedBand = bands.indexOf(String(inherited[confidenceField]));
+  if (sourceBand >= 0 && inheritedBand > Math.min(sourceBand, bands.indexOf("medium"))) {
+    addIssue(issues, "INHERITANCE_CONFIDENCE_CAP", `${path}.${confidenceField}`, "Inherited confidence/support cannot exceed the matching antecedent's confidence or medium.", "RULE-ENT-9; §5.10.1; §7.3.1–2");
+  }
+}
+
 function visitEnvelope(
   envelope: unknown,
   layer: ContractLayer,
@@ -1622,6 +1712,8 @@ function visitEnvelope(
   tokenIds: ReadonlySet<string>,
   documentContext: unknown,
   unitIds: Set<string>,
+  source: string,
+  entities: ReadonlyMap<string, Record<string, unknown>>,
 ): void {
   mergeInto(issues, validateValueEnvelope(envelope, { layer }), path);
   if (!isRecord(envelope)) return;
@@ -1635,11 +1727,16 @@ function visitEnvelope(
           validateInheritanceRef(candidate.inheritedFrom, { currentEntityIds: entityIds, documentContext }),
           `${path}.alternatives[${index}].inheritedFrom`,
         );
+        validateInheritedChannel(candidate, layer, `${path}.alternatives[${index}]`, true, entities, documentContext, issues);
       }
     });
   }
   if (hasOwn(envelope, "inheritedFrom")) {
     mergeInto(issues, validateInheritanceRef(envelope.inheritedFrom, { currentEntityIds: entityIds, documentContext }), `${path}.inheritedFrom`);
+    if ((envelope.status === "resolved" || envelope.status === "fallback")
+        && envelope.value !== null && envelope.value !== undefined) {
+      validateInheritedChannel(envelope, layer, path, false, entities, documentContext, issues);
+    }
   }
   if (hasOwn(envelope, "derivedFrom") && isRecord(envelope.derivedFrom)) {
     const reference = envelope.derivedFrom.romanisationRef;
@@ -1653,7 +1750,7 @@ function visitEnvelope(
   }
   values.forEach((item) => {
     if (item.value === null || item.value === undefined) return;
-    if (layer === "L2") mergeInto(issues, validateReadingAlignment(item.value, ownerSpan), item.path);
+    if (layer === "L2") mergeInto(issues, validateReadingAlignment(item.value, ownerSpan, source), item.path);
     if (layer === "L3R") mergeInto(issues, validateRomanisation(item.value, ownerSpan), item.path);
     if (layer === "L3E") mergeInto(issues, validateEnglishForm(item.value), item.path);
     if ((layer === "L3R" || layer === "L3E") && isRecord(item.value) && item.value.assembled === true && Array.isArray(item.value.units)) {
@@ -1708,7 +1805,9 @@ export function validateAnalysisStructure(input: unknown, documentContext?: unkn
     entityIds.add(entity.id);
   });
   const entitySpanById = new Map<string, [number, number]>();
+  const entityById = new Map<string, Record<string, unknown>>();
   entities.forEach((entity) => {
+    if (isRecord(entity) && typeof entity.id === "string") entityById.set(entity.id, entity);
     if (isRecord(entity) && typeof entity.id === "string" && isSpan(entity.span)) entitySpanById.set(entity.id, entity.span);
   });
   const unitIds = new Set<string>();
@@ -1724,8 +1823,8 @@ export function validateAnalysisStructure(input: unknown, documentContext?: unkn
     cursor = token.span[1];
     if (token.text !== source.slice(token.span[0], token.span[1])) addIssue(issues, "TOKEN_TEXT", `${path}.text`, "Token text is exact source slice.", "INV-1");
     if (isUnsafeTextBoundary(source, token.span[0]) || isUnsafeTextBoundary(source, token.span[1])) addIssue(issues, "TOKEN_UNSAFE_BOUNDARY", `${path}.span`, "Token boundary splits a protected UTF-16/text sequence.", "INV-4");
-    visitEnvelope(token.reading, "L2", token.span, `${path}.reading`, issues, entityIds, tokenIds, documentContext, unitIds);
-    visitEnvelope(token.romanisation, "L3R", token.span, `${path}.romanisation`, issues, entityIds, tokenIds, documentContext, unitIds);
+    visitEnvelope(token.reading, "L2", token.span, `${path}.reading`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
+    visitEnvelope(token.romanisation, "L3R", token.span, `${path}.romanisation`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
   });
   if (cursor !== source.length) addIssue(issues, "TOKEN_PARTITION", "$.tokens", "Tokens must cover the complete source.", "INV-2");
   const tokenBoundaries = new Set<number>([0, source.length]);
@@ -1768,9 +1867,9 @@ export function validateAnalysisStructure(input: unknown, documentContext?: unkn
       }
     }
     if (!PERSON_TYPES.has(String(entity.type)) && hasOwn(entity, "structure")) addIssue(issues, "PERSON_STRUCTURE_SCOPE", `${path}.structure`, "PersonNameStructure is person-only.", "§5.7");
-    visitEnvelope(entity.reading, "L2", entity.span, `${path}.reading`, issues, entityIds, tokenIds, documentContext, unitIds);
-    visitEnvelope(entity.romanisation, "L3R", entity.span, `${path}.romanisation`, issues, entityIds, tokenIds, documentContext, unitIds);
-    visitEnvelope(entity.englishForm, "L3E", entity.span, `${path}.englishForm`, issues, entityIds, tokenIds, documentContext, unitIds);
+    visitEnvelope(entity.reading, "L2", entity.span, `${path}.reading`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
+    visitEnvelope(entity.romanisation, "L3R", entity.span, `${path}.romanisation`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
+    visitEnvelope(entity.englishForm, "L3E", entity.span, `${path}.englishForm`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
   });
   for (let left = 0; left < entitySpans.length; left += 1) {
     for (let right = left + 1; right < entitySpans.length; right += 1) {
@@ -1829,7 +1928,7 @@ export function validateAnalysisStructure(input: unknown, documentContext?: unkn
     const order: [number, number, string] = [term.span[0], -term.span[1], String(term.entryScope)];
     if (previousTerm !== undefined && (order[0] < previousTerm[0] || (order[0] === previousTerm[0] && (order[1] < previousTerm[1] || (order[1] === previousTerm[1] && order[2] < previousTerm[2]))))) addIssue(issues, "TERM_RESOLUTION_ORDER", path, "Term resolutions follow deterministic order.", "§5.8");
     previousTerm = order;
-    visitEnvelope(term.result, "L4", term.span, `${path}.result`, issues, entityIds, tokenIds, documentContext, unitIds);
+    visitEnvelope(term.result, "L4", term.span, `${path}.result`, issues, entityIds, tokenIds, documentContext, unitIds, source, entityById);
     if (isRecord(term.result)) {
       const renderings: unknown[] = [term.result.value];
       if (Array.isArray(term.result.alternatives)) term.result.alternatives.forEach((candidate) => { if (isRecord(candidate)) renderings.push(candidate.value); });
@@ -2054,6 +2153,13 @@ export function validateAnnotationProjectionConsistency(
         || annotation.confidence !== envelope.confidence
         || JSON.stringify(annotation.cautions) !== JSON.stringify(envelope.cautions)) {
       addIssue(issues, "PROJECTED_ANNOTATION_ENVELOPE", path, "Projected status, confidence and cautions must copy the source channel.", "§5.11");
+    }
+    if (envelope.value === null && annotation.rendered !== null) {
+      addIssue(issues, "PROJECTED_ANNOTATION_NO_VALUE", `${path}.rendered`, "An unselected channel has no rendered value.", "§5.11 ProjectedAnnotation");
+    } else if ((channel === "romanisation" || channel === "englishForm")
+        && isRecord(envelope.value) && envelope.value.assembled === false
+        && typeof envelope.value.text === "string" && annotation.rendered !== envelope.value.text) {
+      addIssue(issues, "PROJECTED_ANNOTATION_VERBATIM", `${path}.rendered`, "Verbatim annotations preserve the exact selected text.", "§5.11; RULE-API-6; RULE-API-10");
     }
   });
   return finish(issues);

@@ -453,6 +453,7 @@ test("T-API-019 and RULE-API-24: candidate ranks, evidence, support and inherita
 
   const selectedInherited = envelope({
     provenance: "inherited",
+    confidence: "medium",
     inheritedFrom: { kind: "documentContext", contextId: "ctx", ref: "m0" },
   });
   assertValid(validateValueEnvelope(selectedInherited));
@@ -1342,7 +1343,7 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
     },
     validateJyutping: () => ({ ok: true, errors: [] }),
   };
-  const validSnapshot = {
+  const shapeValidSnapshot = {
     id: "0".repeat(64),
     snapshotFormatVersion: "1",
     providerId: "provider.example",
@@ -1366,28 +1367,28 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
 
   assertValid(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: fullCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: fullCoverage },
   ));
   assertValid(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [lexiconWarning] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: degradedCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: degradedCoverage },
   ));
 
   const duplicateSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [
       { inputHash: "a".repeat(64), output: "first" },
       { inputHash: "a".repeat(64), output: "second" },
     ],
   };
   const invalidValueSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [{ inputHash: "a".repeat(64), output: 1 }],
   };
   const cyclicOutput: Record<string, unknown> = {};
   cyclicOutput.self = cyclicOutput;
   const cyclicSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [{ inputHash: "a".repeat(64), output: cyclicOutput }],
   };
   assert.doesNotThrow(() => validateEngineCreationResult(
@@ -1422,7 +1423,7 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
   ), "ENGINE_CREATION_DEGRADED_DIAGNOSTIC");
   assertIssue(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [lexiconWarning] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: fullCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: fullCoverage },
   ), "ENGINE_CREATION_CLEAN_DIAGNOSTICS");
   assertIssue(validateEngineCreationResult(
     { ok: false, engine: liveEngine, diagnostics: [snapshotError] },
@@ -1432,10 +1433,11 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
     { ok: false, engine: null, diagnostics: [] },
     { providerSnapshot: duplicateSnapshot },
   ), "ENGINE_CREATION_FAILURE_DIAGNOSTICS");
-  assertIssue(validateEngineCreationResult(
+  // Shape validity cannot prove the snapshot identity; a hash mismatch may fail.
+  assertValid(validateEngineCreationResult(
     { ok: false, engine: null, diagnostics: [snapshotError] },
-    { providerSnapshot: validSnapshot },
-  ), "ENGINE_CREATION_UNEXPECTED_FAILURE");
+    { providerSnapshot: shapeValidSnapshot },
+  ));
   assertIssue(validateEngineCreationResult(
     { ok: false, engine: null, diagnostics: [snapshotError] },
     { lexiconCoverage: { ...fullCoverage, hkscs: false } },
@@ -1565,6 +1567,7 @@ test("T-API-038: two channels inherit from distinct antecedents while a third st
   const analysis = analysisFixture();
   const inheritedReading = readingEnvelope([1, 2]);
   inheritedReading.provenance = "inherited";
+  inheritedReading.confidence = "medium";
   inheritedReading.inheritedFrom = { kind: "analysis", entityId: "e0" };
   const inheritedRomanisation = romanisationEnvelope("B");
   inheritedRomanisation.provenance = "inherited";
@@ -1581,7 +1584,14 @@ test("T-API-038: two channels inherit from distinct antecedents while a third st
       reading: inheritedReading, romanisation: inheritedRomanisation, englishForm: englishEnvelope("B"),
     },
   ];
-  const context = { contextFormatVersion: "1", id: "ctx", entities: [{ ref: "m0", text: "B", type: "other" }] };
+  const context = { contextFormatVersion: "1", id: "ctx", entities: [{
+    ref: "m0", text: "B", type: "other",
+    romanisation: {
+      value: { formKind: "romanisation", assembled: false, text: "B" },
+      status: "resolved", provenance: "convention_table", confidence: "medium", evidenceClass: "E6",
+      externalAttestation: "not_attested", cautions: [],
+    },
+  }] };
   assertValid(validateAnalysisStructure(analysis, context));
 
   const illegalLocal = structuredClone(analysis);

@@ -49,11 +49,12 @@ const candidateDefinition = (
   valueDefinition: string,
   externalAttestation?: "not_applicable",
   variationAllowed = false,
+  baseOnly = false,
 ): Readonly<Record<string, unknown>> => strictObject(
   {
     value: ref(valueDefinition),
     rank: { type: "number" },
-    provenance: ref("ProducedProvenance"),
+    ...(baseOnly ? {} : { provenance: ref("ProducedProvenance") }),
     evidenceClass: nullable(ref("EvidenceClass")),
     externalAttestation: externalAttestation === undefined
       ? ref("ExternalAttestation")
@@ -65,16 +66,19 @@ const candidateDefinition = (
     cautions: { type: "array", items: ref("CautionCode") },
     ...(variationAllowed ? { variation: ref("VariationKind") } : {}),
     note: { type: "string" },
-    inheritedFrom: ref("InheritanceRef"),
+    ...(baseOnly ? {} : { inheritedFrom: ref("InheritanceRef") }),
   },
-  ["value", "provenance", "evidenceClass", "externalAttestation", "cautions"],
+  ["value", ...(baseOnly ? [] : ["provenance"]), "evidenceClass", "externalAttestation", "cautions"],
   {
     allOf: [
-      {
+      ...(baseOnly ? [] : [{
         if: { properties: { provenance: { const: "inherited" } }, required: ["provenance"] },
         then: requires("inheritedFrom"),
         else: absent("inheritedFrom"),
-      },
+      }, {
+        if: { properties: { provenance: { const: "rule_engine" } }, required: ["provenance"] },
+        then: { properties: { support: { enum: ["low", "none"] } } },
+      }]),
       {
         if: { required: ["support"] },
         then: { properties: { support: { enum: ["medium", "low", "none"] } } },
@@ -200,6 +204,10 @@ const valueDefinition = (
         then: { properties: { confidence: { enum: ["low", "none"] } } },
       },
       {
+        if: { properties: { provenance: { const: "inherited" } }, required: ["provenance"] },
+        then: { properties: { confidence: { enum: ["medium", "low", "none"] } } },
+      },
+      {
         if: {
           properties: { scopeDowngrade: { const: "class_applied_to_individual" } },
           required: ["scopeDowngrade"],
@@ -228,6 +236,14 @@ const memoryChannelDefinition = (
     allOf: [
       {
         if: { properties: { status: { const: "fallback" } }, required: ["status"] },
+        then: { properties: { confidence: { enum: ["low", "none"] } } },
+      },
+      {
+        if: { properties: { provenance: { const: "inherited" } }, required: ["provenance"] },
+        then: { properties: { confidence: { enum: ["medium", "low", "none"] } } },
+      },
+      {
+        if: { properties: { provenance: { const: "rule_engine" } }, required: ["provenance"] },
         then: { properties: { confidence: { enum: ["low", "none"] } } },
       },
       {
@@ -644,7 +660,12 @@ const rawDefinitions: Readonly<Record<string, JsonSchema>> = {
   CandidateEnglishForm: candidateDefinition("EnglishForm"),
   CandidateTermRendering: candidateDefinition("TermRendering", "not_applicable"),
   CandidateBase: {
-    anyOf: [ref("CandidateReading"), ref("CandidateRomanisation"), ref("CandidateEnglishForm"), ref("CandidateTermRendering")],
+    anyOf: [
+      candidateDefinition("Reading", "not_applicable", true, true),
+      candidateDefinition("Romanisation", undefined, false, true),
+      candidateDefinition("EnglishForm", undefined, false, true),
+      candidateDefinition("TermRendering", "not_applicable", false, true),
+    ],
   },
   InheritedCandidate: {
     allOf: [
@@ -770,11 +791,16 @@ const rawDefinitions: Readonly<Record<string, JsonSchema>> = {
     allOf: [
       ref("Diagnostic"),
       {
-        type: "object",
-        properties: {
-          code: { enum: ["LEXICON_MISSING_CAPABILITY", "PROVIDER_SNAPSHOT_INVALID"] },
-        },
-        required: ["code"],
+        oneOf: [
+          {
+            properties: { code: { const: "LEXICON_MISSING_CAPABILITY" }, severity: { const: "warning" } },
+            required: ["code", "severity"],
+          },
+          {
+            properties: { code: { const: "PROVIDER_SNAPSHOT_INVALID" }, severity: { const: "error" } },
+            required: ["code", "severity"],
+          },
+        ],
       },
       absent("span"),
     ],
@@ -1216,7 +1242,7 @@ const rawDefinitions: Readonly<Record<string, JsonSchema>> = {
   ProtectedSpan: strictObject(
     {
       span: ref("Span"), entityId: ref("NonEmptyString"), entityType: ref("EntityType"),
-      replacement: { type: "string" }, formKind: ref("FormKind"), assembled: { type: "boolean" },
+      replacement: ref("NonEmptyString"), formKind: ref("FormKind"), assembled: { type: "boolean" },
       provenance: ref("ProducedProvenance"), evidenceClass: ref("EvidenceClass"),
       externalAttestation: ref("ExternalAttestation"), protection: enumSchema(["strict", "preferred", "fallback"]),
       styleApplied: nullable(ref("GeneratedPersonNameStyle")), rationale: { type: "string" },

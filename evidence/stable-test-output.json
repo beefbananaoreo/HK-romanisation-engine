@@ -2,6 +2,146 @@
   "format": "CHG050-STEP1-TEST-RESULTS-1",
   "tests": [
     {
+      "name": "INV-14 rejects reversed, overlapping, and group-crossing individual reading spans",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Reading alignment rejects malformed group records and sparse arrays",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Empty half-open reading spans do not occupy or overlap source text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "T-JP-041/G3 checks syllable and group boundaries inside UTF-16 text sequences",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Structural reading validation preserves mixed text, lone surrogates, and normalization distinctions",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Lattice windows stay inside the supplied source instead of relying on truncating slices",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Lattice paths cannot skip sparse edges, alternatives, or index slots",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Annotation projection preserves selected verbatim forms and does not invent unresolved text",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Candidate scope downgrade uses its own evidence and optional support",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory reading preserves the rule-engine confidence hard cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory romanisation preserves the rule-engine confidence hard cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory englishForm preserves the rule-engine confidence hard cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Creation failure remains legal when snapshot shape passes but identity is unverified",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Creation validation still rejects successful creation from a structurally invalid snapshot",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited reading resolves a selected analysis channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited romanisation resolves a selected analysis channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited englishForm resolves a selected analysis channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited reading resolves a selected documentContext channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited romanisation resolves a selected documentContext channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inherited englishForm resolves a selected documentContext channel and cannot raise confidence",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Available high-confidence antecedents still cap inherited confidence at medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Non-selected Analysis channel statuses cannot serve as inheritance sources",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inheritance keeps unavailable context content outside the structural check",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Creation diagnostic schema preserves the normative warning/error pairing",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Provider snapshot ids require primitive lower-case SHA-256 strings",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Provider snapshot validation rejects object ids without invoking coercion",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Protected replacements are non-empty exact strings in schema and runtime",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "CandidateBase materialises declared base fields without requiring candidate provenance",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "T-API-055/057 G28/G30 Romanisation: all complete ordered three-unit partitions accepted",
       "nesting": 0,
       "result": "PASS"
@@ -737,6 +877,76 @@
       "result": "PASS"
     },
     {
+      "name": "L2 candidate support preserves optionality and the rule-engine cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L2 inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L3R candidate support preserves optionality and the rule-engine cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L3R inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L3E candidate support preserves optionality and the rule-engine cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L3E inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L4 candidate support preserves optionality and the rule-engine cap",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "L4 inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory reading inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory romanisation inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory englishForm inherited confidence cannot exceed medium",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Value alternatives reject array holes without filling or mutating them",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "DocumentContext entities reject sparse entries while dense and empty lists remain valid",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Import preview and apply reject sparse rows while dense and empty lists remain valid",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "Schema generator CLI emits the complete schema from a separate working directory",
       "nesting": 0,
       "result": "PASS"
@@ -1107,6 +1317,6 @@
       "result": "PASS"
     }
   ],
-  "passed": 221,
+  "passed": 263,
   "failed": 0
 }
