@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   contractSchema,
@@ -34,7 +35,7 @@ export async function generateContractSchema(
 }
 
 const isDirectInvocation = process.argv[1] !== undefined
-  && resolve(process.argv[1]) === resolve(new URL(import.meta.url).pathname);
+  && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 if (isDirectInvocation) {
   const outputPath = await generateContractSchema();

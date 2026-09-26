@@ -737,6 +737,11 @@
       "result": "PASS"
     },
     {
+      "name": "Schema generator CLI emits the complete schema from a separate working directory",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "schema is valid strict JSON Schema 2020-12 with a closed 5.0.16 root graph",
       "nesting": 0,
       "result": "PASS"
@@ -877,6 +882,11 @@
       "result": "PASS"
     },
     {
+      "name": "Validator issue paths preserve the root through nested validation",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "T-API-050/051/054: userDataVersion has one exact bounded public number domain",
       "nesting": 0,
       "result": "PASS"
@@ -918,6 +928,11 @@
     },
     {
       "name": "T-API-016/017: verbatim and assembled EnglishForm discriminants are mutually exclusive",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "English assembly units require string text in Analysis and memory",
       "nesting": 0,
       "result": "PASS"
     },
@@ -1067,6 +1082,11 @@
       "result": "PASS"
     },
     {
+      "name": "Verbatim protected replacements preserve exact text under either directive style",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "T-API-012/042/F7: overlap diagnostics are pure, exact, per-directive and deterministic",
       "nesting": 0,
       "result": "PASS"
@@ -1087,6 +1107,6 @@
       "result": "PASS"
     }
   ],
-  "passed": 217,
+  "passed": 221,
   "failed": 0
 }

@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { Ajv2020, type ValidateFunction } from "ajv/dist/2020.js";
 
@@ -10,6 +15,25 @@ import {
 } from "../src/schema/contract-schema.js";
 
 type ObjectValue = Record<string, unknown>;
+
+test("Schema generator CLI emits the complete schema from a separate working directory", () => {
+  const directory = mkdtempSync(join(tmpdir(), "hklang schema "));
+  try {
+    const generator = fileURLToPath(new URL("../src/schema/generate-schema.js", import.meta.url));
+    // The executable's path must contain spaces too: URL.pathname leaves %20 encoded.
+    const moduleDirectory = join(directory, "schema module");
+    cpSync(dirname(generator), moduleDirectory, { recursive: true });
+    writeFileSync(join(directory, "package.json"), '{"type":"module"}\n');
+    const result = spawnSync(process.execPath, [join(moduleDirectory, "generate-schema.js")], { cwd: directory, encoding: "utf8" });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0, result.stderr);
+    const outputPath = join(directory, "generated", "hklang-contract-5.0.16.schema.json");
+    assert.equal(result.stdout.trim(), outputPath);
+    assert.equal(readFileSync(outputPath, "utf8"), `${JSON.stringify(contractSchema, null, 2)}\n`);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
 function createAjv(): Ajv2020 {
   // Cross-allOf requirements are intentional. Ajv's strictRequired lint

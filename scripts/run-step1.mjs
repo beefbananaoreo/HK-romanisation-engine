@@ -26,6 +26,8 @@ if (files.length < 4) throw new Error('Missing bounded CHG050 structural tests')
 const output = command(['--test','--test-concurrency=1','--test-reporter=./scripts/stable-reporter.mjs',...files]);
 const results = JSON.parse(output);
 if (results.failed || results.passed === 0) throw new Error('Tests did not close');
+// Exercise the reporter itself outside the recorded contract evidence.
+command(['--test', 'test/stable-reporter.test.mjs']);
 mkdirSync('evidence',{recursive:true});
 const stable='evidence/stable-test-output.json';
 if(record) writeFileSync(stable,output); else if(readFileSync(stable,'utf8')!==output) throw new Error('Stable test output differs');

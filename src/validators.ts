@@ -162,7 +162,7 @@ export function validateUserDataVersionTransition(
 
 function mergeInto(target: ValidationIssue[], result: ValidationResult, prefix = ""): void {
   for (const item of result.issues) {
-    target.push({ ...item, path: `${prefix}${item.path === "$" ? "" : item.path.slice(1)}` || "$" });
+    target.push({ ...item, path: `${prefix || "$"}${item.path === "$" ? "" : item.path.slice(1)}` });
   }
 }
 
@@ -631,6 +631,9 @@ function validateEnglishUnit(
   if (typeof input.kind !== "string" || !["romanised", "literal", "translated"].includes(input.kind)) {
     addIssue(issues, "ENGLISH_UNIT_KIND", `${path}.kind`, "Unknown EnglishAssemblyUnit kind.", "§5.7");
     return null;
+  }
+  if (typeof input.text !== "string") {
+    addIssue(issues, "ENGLISH_UNIT_TEXT", `${path}.text`, "English assembly unit requires string text.", "§5.7; §5.10.2");
   }
   validateKnownStrings(input.provenance, PRODUCED_PROVENANCES, `${path}.provenance`, "ENGLISH_UNIT_PROVENANCE", "§5.7; §5.10.3", issues);
   if (input.evidenceClass !== null) {
@@ -2206,6 +2209,9 @@ export function validateProjectionConsistency(analysis: unknown, directives: unk
         || english.evidenceClass !== protectedSpan.evidenceClass
         || english.externalAttestation !== protectedSpan.externalAttestation) {
       addIssue(issues, "PROTECTED_SPAN_COPY", `$.protectedSpans[${index}]`, "ProtectedSpan must preserve source form and evidence fields.", "§5.12 rules 6–7");
+    }
+    if (form.assembled === false && protectedSpan.replacement !== form.text) {
+      addIssue(issues, "PROTECTED_VERBATIM_REPLACEMENT", `$.protectedSpans[${index}].replacement`, "Verbatim protected replacement must preserve the source form text exactly.", "RULE-API-6; RULE-API-10; §5.12");
     }
     const expectsStyle = form.assembled === true && form.person === true && hasOwn(form, "styleApplicable");
     if (expectsStyle ? protectedSpan.styleApplied !== directives.styleUsed : protectedSpan.styleApplied !== null) {
