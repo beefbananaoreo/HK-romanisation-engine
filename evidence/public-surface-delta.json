@@ -7,11 +7,25 @@
     "removed": [],
     "changed": [
       "AssembledRomanisation",
+      "CandidateBase",
+      "CandidateEnglishForm",
+      "CandidateReading",
+      "CandidateRomanisation",
+      "CandidateTermRendering",
+      "CreationDiagnostic",
       "Grouping",
       "MemoryAssembledRomanisation",
+      "MemoryChannelEnglishForm",
+      "MemoryChannelReading",
+      "MemoryChannelRomanisation",
+      "ProtectedSpan",
+      "ValueEnglishForm",
+      "ValueReading",
+      "ValueRomanisation",
+      "ValueTermRendering",
       "Versions"
     ],
-    "unchanged": 172
+    "unchanged": 158
   },
   "typeDelta": {
     "added": [
@@ -29,7 +43,23 @@
     ],
     "unchanged": 148
   },
-  "authority": "CHG-050 §§5.2–5.3,5.6–5.7,5.10.2",
-  "unrelatedExistingSchemaDefinitions": "172 unchanged",
+  "authority": "CHG-050 §§5.2–5.3,5.6–5.7,5.10.2; validation corrections §§5.5,5.10,5.12,7.3 and INV-17",
+  "correctedDefinitions": [
+    "CandidateBase",
+    "CandidateEnglishForm",
+    "CandidateReading",
+    "CandidateRomanisation",
+    "CandidateTermRendering",
+    "CreationDiagnostic",
+    "MemoryChannelEnglishForm",
+    "MemoryChannelReading",
+    "MemoryChannelRomanisation",
+    "ProtectedSpan",
+    "ValueEnglishForm",
+    "ValueReading",
+    "ValueRomanisation",
+    "ValueTermRendering"
+  ],
+  "unrelatedExistingSchemaDefinitions": "158 unchanged",
   "baselineSchemaSha256": "286387085ed713fc90ec7bfeb57c2f55343aa1dae5a2d5145c8e39418819eb76"
 }

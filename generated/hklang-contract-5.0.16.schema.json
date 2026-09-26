@@ -1616,6 +1616,30 @@
         {
           "if": {
             "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
             "required": [
               "support"
             ]
@@ -1758,6 +1782,30 @@
               "required": [
                 "inheritedFrom"
               ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
             }
           }
         },
@@ -1912,6 +1960,30 @@
         {
           "if": {
             "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
             "required": [
               "support"
             ]
@@ -2060,6 +2132,30 @@
         {
           "if": {
             "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "support": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
             "required": [
               "support"
             ]
@@ -2109,16 +2205,439 @@
     "CandidateBase": {
       "anyOf": [
         {
-          "$ref": "#/$defs/CandidateReading"
+          "type": "object",
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/Reading"
+            },
+            "rank": {
+              "type": "number"
+            },
+            "evidenceClass": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/EvidenceClass"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "externalAttestation": {
+              "const": "not_applicable"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scopeDowngrade": {
+              "const": "class_applied_to_individual"
+            },
+            "support": {
+              "$ref": "#/$defs/Confidence"
+            },
+            "attestationCount": {
+              "type": "number"
+            },
+            "cautions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CautionCode"
+              }
+            },
+            "variation": {
+              "$ref": "#/$defs/VariationKind"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "evidenceClass",
+            "externalAttestation",
+            "cautions"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "type": "object",
+                "required": [
+                  "support"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "support": {
+                    "enum": [
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "scopeDowngrade": {
+                    "const": "class_applied_to_individual"
+                  }
+                },
+                "required": [
+                  "scopeDowngrade"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "evidenceClass": {
+                    "const": "E6"
+                  },
+                  "support": {
+                    "enum": [
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         },
         {
-          "$ref": "#/$defs/CandidateRomanisation"
+          "type": "object",
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/Romanisation"
+            },
+            "rank": {
+              "type": "number"
+            },
+            "evidenceClass": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/EvidenceClass"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "externalAttestation": {
+              "$ref": "#/$defs/ExternalAttestation"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scopeDowngrade": {
+              "const": "class_applied_to_individual"
+            },
+            "support": {
+              "$ref": "#/$defs/Confidence"
+            },
+            "attestationCount": {
+              "type": "number"
+            },
+            "cautions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CautionCode"
+              }
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "evidenceClass",
+            "externalAttestation",
+            "cautions"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "type": "object",
+                "required": [
+                  "support"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "support": {
+                    "enum": [
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "scopeDowngrade": {
+                    "const": "class_applied_to_individual"
+                  }
+                },
+                "required": [
+                  "scopeDowngrade"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "evidenceClass": {
+                    "const": "E6"
+                  },
+                  "support": {
+                    "enum": [
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         },
         {
-          "$ref": "#/$defs/CandidateEnglishForm"
+          "type": "object",
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/EnglishForm"
+            },
+            "rank": {
+              "type": "number"
+            },
+            "evidenceClass": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/EvidenceClass"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "externalAttestation": {
+              "$ref": "#/$defs/ExternalAttestation"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scopeDowngrade": {
+              "const": "class_applied_to_individual"
+            },
+            "support": {
+              "$ref": "#/$defs/Confidence"
+            },
+            "attestationCount": {
+              "type": "number"
+            },
+            "cautions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CautionCode"
+              }
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "evidenceClass",
+            "externalAttestation",
+            "cautions"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "type": "object",
+                "required": [
+                  "support"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "support": {
+                    "enum": [
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "scopeDowngrade": {
+                    "const": "class_applied_to_individual"
+                  }
+                },
+                "required": [
+                  "scopeDowngrade"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "evidenceClass": {
+                    "const": "E6"
+                  },
+                  "support": {
+                    "enum": [
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         },
         {
-          "$ref": "#/$defs/CandidateTermRendering"
+          "type": "object",
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/TermRendering"
+            },
+            "rank": {
+              "type": "number"
+            },
+            "evidenceClass": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/EvidenceClass"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "externalAttestation": {
+              "const": "not_applicable"
+            },
+            "attestation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Attestation"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scopeDowngrade": {
+              "const": "class_applied_to_individual"
+            },
+            "support": {
+              "$ref": "#/$defs/Confidence"
+            },
+            "attestationCount": {
+              "type": "number"
+            },
+            "cautions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CautionCode"
+              }
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "evidenceClass",
+            "externalAttestation",
+            "cautions"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "type": "object",
+                "required": [
+                  "support"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "support": {
+                    "enum": [
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "type": "object",
+                "properties": {
+                  "scopeDowngrade": {
+                    "const": "class_applied_to_individual"
+                  }
+                },
+                "required": [
+                  "scopeDowngrade"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "properties": {
+                  "evidenceClass": {
+                    "const": "E6"
+                  },
+                  "support": {
+                    "enum": [
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         }
       ]
     },
@@ -2644,6 +3163,31 @@
           "if": {
             "type": "object",
             "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
               "scopeDowngrade": {
                 "const": "class_applied_to_individual"
               }
@@ -3106,6 +3650,31 @@
           "if": {
             "type": "object",
             "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
               "scopeDowngrade": {
                 "const": "class_applied_to_individual"
               }
@@ -3546,6 +4115,31 @@
             "properties": {
               "confidence": {
                 "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
                   "low",
                   "none"
                 ]
@@ -4008,6 +4602,31 @@
             "properties": {
               "confidence": {
                 "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
                   "low",
                   "none"
                 ]
@@ -4518,17 +5137,37 @@
           "$ref": "#/$defs/Diagnostic"
         },
         {
-          "type": "object",
-          "properties": {
-            "code": {
-              "enum": [
-                "LEXICON_MISSING_CAPABILITY",
-                "PROVIDER_SNAPSHOT_INVALID"
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "const": "LEXICON_MISSING_CAPABILITY"
+                },
+                "severity": {
+                  "const": "warning"
+                }
+              },
+              "required": [
+                "code",
+                "severity"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "const": "PROVIDER_SNAPSHOT_INVALID"
+                },
+                "severity": {
+                  "const": "error"
+                }
+              },
+              "required": [
+                "code",
+                "severity"
               ]
             }
-          },
-          "required": [
-            "code"
           ]
         },
         {
@@ -6631,6 +7270,55 @@
           "if": {
             "type": "object",
             "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
               "scopeDowngrade": {
                 "const": "class_applied_to_individual"
               }
@@ -6746,6 +7434,55 @@
           "if": {
             "type": "object",
             "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
               "scopeDowngrade": {
                 "const": "class_applied_to_individual"
               }
@@ -6843,6 +7580,55 @@
             },
             "required": [
               "status"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "inherited"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "medium",
+                  "low",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "provenance": {
+                "const": "rule_engine"
+              }
+            },
+            "required": [
+              "provenance"
             ]
           },
           "then": {
@@ -7248,7 +8034,7 @@
           "$ref": "#/$defs/EntityType"
         },
         "replacement": {
-          "type": "string"
+          "$ref": "#/$defs/NonEmptyString"
         },
         "formKind": {
           "$ref": "#/$defs/FormKind"

@@ -253,6 +253,25 @@ function analysisFixture(source = "AB"): Record<string, unknown> {
   };
 }
 
+test("Validator issue paths preserve the root through nested validation", () => {
+  const analysis = analysisFixture();
+  const versions = analysis.versions as Record<string, unknown>;
+  versions.userDataVersion = -1;
+  assert.equal(validateVersions(versions).issues[0]?.path, "$.userDataVersion");
+  assert.equal(validateAnalysisStructure(analysis).issues[0]?.path, "$.versions.userDataVersion");
+  assert.equal(validateUserDataVersionTransition(-1, 0, false, false).issues[0]?.path, "$.before");
+
+  versions.userDataVersion = 0;
+  const form = {
+    formKind: "romanisation", assembled: true, person: false,
+    units: [englishRomanisedUnit("u0", [0, 1], "specific", "a", true)],
+    grouping: [[1]],
+  };
+  assert.equal(validateEnglishForm(form).issues[0]?.path, "$.grouping[0][0]");
+  (analysis.entities as Array<Record<string, unknown>>)[0]!.englishForm = envelope({ value: form });
+  assert.equal(validateAnalysisStructure(analysis).issues[0]?.path, "$.entities[0].englishForm.value.grouping[0][0]");
+});
+
 test("T-API-050/051/054: userDataVersion has one exact bounded public number domain", () => {
   for (const legal of [0, 1, MAX_USER_DATA_VERSION - 1, MAX_USER_DATA_VERSION]) {
     assert.equal(isValidUserDataVersion(legal), true);
@@ -434,6 +453,7 @@ test("T-API-019 and RULE-API-24: candidate ranks, evidence, support and inherita
 
   const selectedInherited = envelope({
     provenance: "inherited",
+    confidence: "medium",
     inheritedFrom: { kind: "documentContext", contextId: "ctx", ref: "m0" },
   });
   assertValid(validateValueEnvelope(selectedInherited));
@@ -527,6 +547,49 @@ test("T-API-016/017: verbatim and assembled EnglishForm discriminants are mutual
   assertIssue(validateEnglishForm({ formKind: "romanisation", assembled: false, text: "x", units: [] }), "VERBATIM_FORBIDDEN_FIELD");
   assertIssue(validateEnglishForm({ formKind: "romanisation", assembled: true, text: "x", person: false, units: [englishRomanisedUnit("u0", [0, 1], "specific", "x", true)], grouping: [] }), "ASSEMBLED_TEXT_FORBIDDEN");
   assertIssue(validateEnglishForm({ formKind: "official_name", assembled: true, person: false, units: [englishRomanisedUnit("u0", [0, 1], "specific", "x", true)], grouping: [] }), "ASSEMBLED_FORM_KIND");
+});
+
+test("English assembly units require string text in Analysis and memory", () => {
+  for (const memory of [false, true]) {
+    for (const kind of ["romanised", "literal", "translated"]) {
+      const romanised = englishRomanisedUnit("u0", [0, 1], "specific", "loeng", true);
+      const unit = kind === "romanised"
+        ? romanised
+        : { ...englishLiteralUnit("u1", [1, 2], "generic", " Road "), kind };
+      const units = kind === "romanised" ? [unit] : [romanised, unit];
+      if (memory) {
+        units.forEach((item) => { delete item.id; delete item.span; });
+      }
+      const form = {
+        formKind: kind === "romanised" ? "romanisation" : "hybrid",
+        assembled: true, person: false, units, grouping: [units.map((_, index) => index)],
+      };
+      assertValid(validateEnglishForm(form, { memory }));
+      unit.text = "";
+      assertValid(validateEnglishForm(form, { memory }));
+      for (const invalidText of [undefined, null, 123, false, {}, []]) {
+        unit.text = invalidText;
+        const result = validateEnglishForm(form, { memory });
+        assertIssue(result, "ENGLISH_UNIT_TEXT");
+        assert.equal(result.issues.find((issue) => issue.code === "ENGLISH_UNIT_TEXT")?.path, `$.units[${units.length - 1}].text`);
+      }
+      delete unit.text;
+      assertIssue(validateEnglishForm(form, { memory }), "ENGLISH_UNIT_TEXT");
+      if (memory) {
+        assertIssue(validateDocumentContextSemantics({
+          contextFormatVersion: "1", id: "ctx",
+          entities: [{ ref: "m0", text: "AB", type: "other", englishForm: {
+            value: form, status: "resolved", provenance: "convention_table", confidence: "medium",
+            evidenceClass: "E6", externalAttestation: "not_attested", cautions: [],
+          } }],
+        }), "ENGLISH_UNIT_TEXT");
+      } else {
+        const analysis = analysisFixture();
+        (analysis.entities as Array<Record<string, unknown>>)[0]!.englishForm = envelope({ value: form });
+        assertIssue(validateAnalysisStructure(analysis), "ENGLISH_UNIT_TEXT");
+      }
+    }
+  }
 });
 
 test("T-API-016: Romanisation branches preserve verbatim text or structured units, never both", () => {
@@ -1280,7 +1343,7 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
     },
     validateJyutping: () => ({ ok: true, errors: [] }),
   };
-  const validSnapshot = {
+  const shapeValidSnapshot = {
     id: "0".repeat(64),
     snapshotFormatVersion: "1",
     providerId: "provider.example",
@@ -1304,28 +1367,28 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
 
   assertValid(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: fullCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: fullCoverage },
   ));
   assertValid(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [lexiconWarning] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: degradedCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: degradedCoverage },
   ));
 
   const duplicateSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [
       { inputHash: "a".repeat(64), output: "first" },
       { inputHash: "a".repeat(64), output: "second" },
     ],
   };
   const invalidValueSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [{ inputHash: "a".repeat(64), output: 1 }],
   };
   const cyclicOutput: Record<string, unknown> = {};
   cyclicOutput.self = cyclicOutput;
   const cyclicSnapshot = {
-    ...validSnapshot,
+    ...shapeValidSnapshot,
     entries: [{ inputHash: "a".repeat(64), output: cyclicOutput }],
   };
   assert.doesNotThrow(() => validateEngineCreationResult(
@@ -1360,7 +1423,7 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
   ), "ENGINE_CREATION_DEGRADED_DIAGNOSTIC");
   assertIssue(validateEngineCreationResult(
     { ok: true, engine: liveEngine, diagnostics: [lexiconWarning] },
-    { providerSnapshot: validSnapshot, lexiconCoverage: fullCoverage },
+    { providerSnapshot: shapeValidSnapshot, lexiconCoverage: fullCoverage },
   ), "ENGINE_CREATION_CLEAN_DIAGNOSTICS");
   assertIssue(validateEngineCreationResult(
     { ok: false, engine: liveEngine, diagnostics: [snapshotError] },
@@ -1370,10 +1433,11 @@ test("T-API-011/043 and G25: EngineCreationResult validates clean, degraded and 
     { ok: false, engine: null, diagnostics: [] },
     { providerSnapshot: duplicateSnapshot },
   ), "ENGINE_CREATION_FAILURE_DIAGNOSTICS");
-  assertIssue(validateEngineCreationResult(
+  // Shape validity cannot prove the snapshot identity; a hash mismatch may fail.
+  assertValid(validateEngineCreationResult(
     { ok: false, engine: null, diagnostics: [snapshotError] },
-    { providerSnapshot: validSnapshot },
-  ), "ENGINE_CREATION_UNEXPECTED_FAILURE");
+    { providerSnapshot: shapeValidSnapshot },
+  ));
   assertIssue(validateEngineCreationResult(
     { ok: false, engine: null, diagnostics: [snapshotError] },
     { lexiconCoverage: { ...fullCoverage, hkscs: false } },
@@ -1503,6 +1567,7 @@ test("T-API-038: two channels inherit from distinct antecedents while a third st
   const analysis = analysisFixture();
   const inheritedReading = readingEnvelope([1, 2]);
   inheritedReading.provenance = "inherited";
+  inheritedReading.confidence = "medium";
   inheritedReading.inheritedFrom = { kind: "analysis", entityId: "e0" };
   const inheritedRomanisation = romanisationEnvelope("B");
   inheritedRomanisation.provenance = "inherited";
@@ -1519,7 +1584,14 @@ test("T-API-038: two channels inherit from distinct antecedents while a third st
       reading: inheritedReading, romanisation: inheritedRomanisation, englishForm: englishEnvelope("B"),
     },
   ];
-  const context = { contextFormatVersion: "1", id: "ctx", entities: [{ ref: "m0", text: "B", type: "other" }] };
+  const context = { contextFormatVersion: "1", id: "ctx", entities: [{
+    ref: "m0", text: "B", type: "other",
+    romanisation: {
+      value: { formKind: "romanisation", assembled: false, text: "B" },
+      status: "resolved", provenance: "convention_table", confidence: "medium", evidenceClass: "E6",
+      externalAttestation: "not_attested", cautions: [],
+    },
+  }] };
   assertValid(validateAnalysisStructure(analysis, context));
 
   const illegalLocal = structuredClone(analysis);
@@ -1837,6 +1909,36 @@ test("T-API-030 and §5.12: TranslationDirectives shape preserves style, overlap
     ...valid,
     unresolvedSemanticSpans: [{ span: [3, 4], status: "unsupported" }],
   }), "UNRESOLVED_REASON_REQUIRED");
+});
+
+test("Verbatim protected replacements preserve exact text under either directive style", () => {
+  const text = " McDONALD-Chan  e\u0301 ";
+  for (const formKind of ["romanisation", "official_name", "native_original", "translation", "hybrid"]) {
+    const analysis = analysisFixture();
+    (analysis.entities as Array<Record<string, unknown>>)[0]!.englishForm = envelope({
+      value: { formKind, assembled: false, text },
+    });
+    for (const styleUsed of ["hyphenated", "joined"]) {
+      const protectedSpan = {
+        span: [0, 2], entityId: "e0", entityType: "other", replacement: text,
+        formKind, assembled: false, provenance: "user_glossary", evidenceClass: "E1a",
+        externalAttestation: "not_attested", protection: "strict", styleApplied: null,
+        rationale: "selected verbatim form",
+      };
+      const directives = {
+        schemaVersion: "1.0", sourceHash: SOURCE_HASH, offsetUnit: "utf16", styleUsed,
+        protectedSpans: [protectedSpan], termDirectives: [], unresolvedSemanticSpans: [], diagnostics: [],
+      };
+      assertValid(validateProjectionConsistency(analysis, directives));
+      for (const replacement of ["unrelated", text.trim(), text.toLowerCase(), text.replace("-", " "), text.normalize("NFC")]) {
+        const result = validateProjectionConsistency(analysis, {
+          ...directives, protectedSpans: [{ ...protectedSpan, replacement }],
+        });
+        assertIssue(result, "PROTECTED_VERBATIM_REPLACEMENT");
+        assert.equal(result.issues.find((issue) => issue.code === "PROTECTED_VERBATIM_REPLACEMENT")?.path, "$.protectedSpans[0].replacement");
+      }
+    }
+  }
 });
 
 test("T-API-012/042/F7: overlap diagnostics are pure, exact, per-directive and deterministic", () => {
