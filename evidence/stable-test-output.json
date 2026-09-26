@@ -72,6 +72,36 @@
       "result": "PASS"
     },
     {
+      "name": "Candidate confidence caps reject malformed support without coercion",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Selected confidence caps reject malformed confidence without coercion",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Memory confidence caps reject malformed confidence without coercion",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inheritance band comparisons reject malformed selected confidence and support without coercion",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Inheritance rejects invalid antecedent bands without coercing them",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "Referenced context antecedents require valid confidence even when candidate support is omitted",
+      "nesting": 0,
+      "result": "PASS"
+    },
+    {
       "name": "Inherited reading resolves a selected analysis channel and cannot raise confidence",
       "nesting": 0,
       "result": "PASS"
@@ -1317,6 +1347,6 @@
       "result": "PASS"
     }
   ],
-  "passed": 263,
+  "passed": 269,
   "failed": 0
 }

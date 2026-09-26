@@ -409,13 +409,13 @@ function validateCandidate(
     validateKnownStrings(candidate.support, CONFIDENCES, `${path}.support`, "CANDIDATE_SUPPORT", "§7.3.1", issues);
   }
   if (candidate.provenance === "rule_engine" && hasOwn(candidate, "support")
-      && !["low", "none"].includes(String(candidate.support))) {
+      && candidate.support !== "low" && candidate.support !== "none") {
     addIssue(issues, "CANDIDATE_RULE_ENGINE_SUPPORT_CAP", `${path}.support`, "Rule-engine candidate support is capped at low when supplied.", "§7.3.1–2; INV-5");
   }
   if (hasOwn(candidate, "scopeDowngrade")
       && (candidate.scopeDowngrade !== "class_applied_to_individual"
         || candidate.evidenceClass !== "E6"
-        || (hasOwn(candidate, "support") && !["low", "none"].includes(String(candidate.support))))) {
+        || (hasOwn(candidate, "support") && candidate.support !== "low" && candidate.support !== "none"))) {
     addIssue(issues, "CANDIDATE_SCOPE_DOWNGRADE", `${path}.scopeDowngrade`, "Candidate scopeDowngrade requires E6 and, when supplied, low/none support.", "§5.5; §7.3.1–3");
   }
   if (hasOwn(candidate, "attestationCount") && (typeof candidate.attestationCount !== "number" || !Number.isFinite(candidate.attestationCount))) {
@@ -500,17 +500,17 @@ export function validateValueEnvelope(
   if (["ambiguous", "conflict", "unresolved", "unsupported", "out_of_scope"].includes(input.status) && input.confidence !== "none") {
     addIssue(issues, "STATUS_CONFIDENCE_NONE", "$.confidence", `${input.status} requires confidence:none.`, "§7.3.1");
   }
-  if (input.status === "fallback" && !["low", "none"].includes(String(input.confidence))) {
+  if (input.status === "fallback" && input.confidence !== "low" && input.confidence !== "none") {
     addIssue(issues, "FALLBACK_CONFIDENCE_CAP", "$.confidence", "fallback confidence is capped at low.", "§7.3.1");
   }
-  if (input.provenance === "rule_engine" && !["low", "none"].includes(String(input.confidence))) {
+  if (input.provenance === "rule_engine" && input.confidence !== "low" && input.confidence !== "none") {
     addIssue(issues, "RULE_ENGINE_CONFIDENCE_CAP", "$.confidence", "rule_engine confidence is capped at low.", "§7.3.2");
   }
   if (input.provenance === "inherited" && input.confidence === "high") {
     addIssue(issues, "INHERITED_CONFIDENCE_CAP", "$.confidence", "Inherited confidence is capped at medium.", "§7.3.2; RULE-ENT-9");
   }
   if (hasOwn(input, "scopeDowngrade")) {
-    if (input.scopeDowngrade !== "class_applied_to_individual" || input.evidenceClass !== "E6" || !["low", "none"].includes(String(input.confidence))) {
+    if (input.scopeDowngrade !== "class_applied_to_individual" || input.evidenceClass !== "E6" || (input.confidence !== "low" && input.confidence !== "none")) {
       addIssue(issues, "SCOPE_DOWNGRADE_COUPLING", "$.scopeDowngrade", "scopeDowngrade requires E6 and low/none confidence.", "§7.3.2–3");
     }
   }
@@ -1234,10 +1234,10 @@ function validateMemoryChannel(input: unknown, channel: "reading" | "romanisatio
     validateKnownStrings(input.evidenceClass, EVIDENCE_CLASSES, `${path}.evidenceClass`, "MEMORY_EVIDENCE", "§5.10.2", issues);
   }
   validateKnownStrings(input.externalAttestation, ATTESTATION_VALUES, `${path}.externalAttestation`, "MEMORY_ATTESTATION", "§5.10.2", issues);
-  if (input.status === "fallback" && !["low", "none"].includes(String(input.confidence))) {
+  if (input.status === "fallback" && input.confidence !== "low" && input.confidence !== "none") {
     addIssue(issues, "MEMORY_FALLBACK_CONFIDENCE", `${path}.confidence`, "Fallback memory confidence is capped at low.", "§7.3.1");
   }
-  if (input.provenance === "rule_engine" && !["low", "none"].includes(String(input.confidence))) {
+  if (input.provenance === "rule_engine" && input.confidence !== "low" && input.confidence !== "none") {
     addIssue(issues, "MEMORY_RULE_ENGINE_CONFIDENCE", `${path}.confidence`, "Memory rule_engine confidence remains capped at low.", "§5.10.2; §7.3.2; INV-5");
   }
   if (input.provenance === "inherited" && input.confidence === "high") {
@@ -1254,7 +1254,7 @@ function validateMemoryChannel(input: unknown, channel: "reading" | "romanisatio
   if (hasOwn(input, "scopeDowngrade")
       && (input.scopeDowngrade !== "class_applied_to_individual"
         || input.evidenceClass !== "E6"
-        || !["low", "none"].includes(String(input.confidence)))) {
+        || (input.confidence !== "low" && input.confidence !== "none"))) {
     addIssue(issues, "MEMORY_SCOPE_DOWNGRADE", `${path}.scopeDowngrade`, "Memory scopeDowngrade requires E6 and low/none confidence.", "§7.3.2–3");
   }
   if (channel === "reading" && input.externalAttestation !== "not_applicable") addIssue(issues, "MEMORY_L2_ATTESTATION", `${path}.externalAttestation`, "Memory L2 remains not_applicable.", "§5.5.2");
@@ -1692,12 +1692,17 @@ function validateInheritedChannel(
     addIssue(issues, "INHERITANCE_CHANNEL_SELECTED", `${path}.inheritedFrom`, "Inheritance requires a selected value in the antecedent's matching channel.", "RULE-API-22; RULE-API-24; §5.10.1");
     return;
   }
+  const bands = ["none", "low", "medium", "high"];
+  const sourceBand = typeof sourceChannel.confidence === "string" ? bands.indexOf(sourceChannel.confidence) : -1;
+  if (sourceBand < 0) {
+    addIssue(issues, "INHERITANCE_SOURCE_CONFIDENCE", `${path}.inheritedFrom`, "The selected antecedent channel requires a valid confidence band.", "§5.5.2; §5.10.2; §7.3.2");
+    return;
+  }
   const confidenceField = candidate ? "support" : "confidence";
   if (candidate && !hasOwn(inherited, confidenceField)) return;
-  const bands = ["none", "low", "medium", "high"];
-  const sourceBand = bands.indexOf(String(sourceChannel.confidence));
-  const inheritedBand = bands.indexOf(String(inherited[confidenceField]));
-  if (sourceBand >= 0 && inheritedBand > Math.min(sourceBand, bands.indexOf("medium"))) {
+  const inheritedConfidence = inherited[confidenceField];
+  const inheritedBand = typeof inheritedConfidence === "string" ? bands.indexOf(inheritedConfidence) : -1;
+  if (inheritedBand > Math.min(sourceBand, bands.indexOf("medium"))) {
     addIssue(issues, "INHERITANCE_CONFIDENCE_CAP", `${path}.${confidenceField}`, "Inherited confidence/support cannot exceed the matching antecedent's confidence or medium.", "RULE-ENT-9; §5.10.1; §7.3.1–2");
   }
 }
